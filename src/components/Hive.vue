@@ -4,6 +4,7 @@ import { useMainStore } from "../store";
 import { shuffle } from "../utils";
 import { useI18n } from "vue-i18n";
 import en from "../locales/en.json";
+import { GAP } from "element-plus";
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -81,22 +82,77 @@ const playHiveSound = (letter: any) => {
     y: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Y_morse_code.ogg",
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
+  var cover = document.getElementById("cover");
   console.log(letter);
   audio.src = dict[letter];
   if (audio) {
-    audio.play();
+    if (cover) {
+      audio.play();
+      cover.style.display = "block";
+    }
   }
+  audio.onended = function () {
+    if (cover) {
+      cover.style.display = "none";
+    }
+  };
+};
+
+const displayMorse = (letter: any) => {
+  const dict: Record<string, string> = {
+    a: "._",
+    b: "_...",
+    c: "_._.",
+    d: "_..",
+    e: ".",
+    f: ".._.",
+    g: "_ _.",
+    h: "....",
+    i: "..",
+    j: "._ _ _",
+    k: "_._",
+    l: "._..",
+    m: "_ _",
+    n: "_ .",
+    o: "_ _ _",
+    p: "._ _.",
+    q: "_ _._",
+    r: "._.",
+    s: "...",
+    t: "_",
+    u: ".._",
+    v: "..._",
+    w: "._ _",
+    x: "_.._",
+    y: "_._ _",
+    z: "_ _..",
+  };
+  const morse = dict[letter];
+  console.log(morse);
+  return morse.concat(" ", " ");
 };
 </script>
 
 <template>
-  <div class="sb-controls" :style="`z-index: ${ZIndex}`">
+  <div class="cover" id="cover"></div>
+  <button id="playQuiz">Play Quiz</button>
+
+  <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
       <strong
         v-for="(letter, index) in userGuess"
         :class="{ 'middle-letter': letter === store.middleLetter }"
         :key="`user-guess-${index}`">
         {{ letter }}
+      </strong>
+    </div>
+
+    <div class="user-guess-morse">
+      <strong
+        v-for="(letter, index) in userGuess"
+        :class="{ 'middle-letter': letter === store.middleLetter }"
+        :key="`user-guess-${index}`">
+        {{ displayMorse(letter) }}
       </strong>
     </div>
 
@@ -116,6 +172,9 @@ const playHiveSound = (letter: any) => {
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ store.middleLetter }}
         </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(store.middleLetter) }}
+        </text>
       </svg>
       <svg
         v-for="(letter, index) in otherLetters"
@@ -133,6 +192,9 @@ const playHiveSound = (letter: any) => {
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ letter }}
+        </text>
+        <text class="cell-morse" x="50%" y="65%" dy="10.75%">
+          {{ displayMorse(letter) }}
         </text>
       </svg>
     </div>
@@ -170,6 +232,13 @@ const playHiveSound = (letter: any) => {
     color: $bl-yellow;
   }
 }
+
+.user-guess-morse {
+  .middle-letter {
+    color: $bl-yellow;
+  }
+}
+
 .sb-controls {
   /* put entire hive behind correctGuesses when table is expanded */
   max-width: 290px;
@@ -204,6 +273,14 @@ const playHiveSound = (letter: any) => {
   text-transform: uppercase;
   pointer-events: none;
 }
+
+.hive .cell-morse {
+  font-weight: 600;
+  font-size: 25px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
 .hive-cell:first-child .cell-fill {
   cursor: pointer;
   fill: $bl-yellow;
@@ -284,6 +361,19 @@ html.dark {
   .user-guess {
     color: $bl-grey;
   }
+}
+
+#cover {
+  display: none;
+  background-color: white;
+  padding: 0 0;
+  width: 26%;
+  height: 50%;
+  position: absolute;
+  top: 62%;
+  left: 35%;
+  z-index: 999;
+  opacity: 50%;
 }
 
 @media only screen and (max-height: 650px) {
