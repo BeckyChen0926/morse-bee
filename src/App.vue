@@ -12,7 +12,7 @@ import { InfoFilled, Calendar, Sunny, Moon } from "@element-plus/icons-vue";
 
 const store = useMainStore();
 const showYesterdaysAnswers = ref(false);
-const showInfo = ref(false);
+const showInfo = ref(true);
 const zindex = ref(0);
 const gameWonModalShown = ref(false); // only show gameWon modal once
 let timer: any;
@@ -71,12 +71,12 @@ store.startGame({ allAnswers });
   <div class="common-layout fireworks">
     <div class="beforeFireworks" v-if="showGameWonModal" />
     <div class="afterFireworks" v-if="showGameWonModal" />
-    <el-header height="2em" id="title-header">
+    <!-- <el-header height="2em" id="title-header">
       <h2>
         <strong> Spelling Bee </strong>
         <span> {{ store.getGameDateString }} </span>
       </h2>
-    </el-header>
+    </el-header> -->
     <el-menu mode="horizontal" :ellipsis="false">
       <el-menu-item index="1" @click="showInfo = true">
         <el-tooltip :content="$t('Info')" placement="top">
@@ -97,7 +97,7 @@ store.startGame({ allAnswers });
 
       <audio id="hiveAudio" preload="auto" hidden></audio>
 
-      <el-menu-item index="3">
+      <!-- <el-menu-item index="3">
         <el-switch
           v-model="darkmode"
           @change="onToggleDarkMode"
@@ -107,7 +107,7 @@ store.startGame({ allAnswers });
           size="large"
           :active-icon="Sunny"
           :inactive-icon="Moon" />
-      </el-menu-item>
+      </el-menu-item> -->
     </el-menu>
     <Progress />
     <CorrectGuesses
