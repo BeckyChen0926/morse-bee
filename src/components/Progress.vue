@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useMainStore } from "../store";
 
 const store = useMainStore();
 const showRanking = ref(false);
+
+
+const progressPercentage = computed(() => {
+  const totalQuestions = store.answers.length;
+  const correctAnswers = store.correctGuesses.size;
+  return (correctAnswers / totalQuestions) * 100;
+});
+
 </script>
 
 <template>
@@ -25,10 +33,13 @@ const showRanking = ref(false);
     </strong>
     <!-- can't use bl-yellow directly, need to pass hex in here -->
     <el-progress
-      :percentage="store.getProgressPercentage"
+      :percentage="progressPercentage"
       :stroke-width="20"
       color="#fce303"
-      :format="() => store.getUserScore" />
+      :format="() => `${progressPercentage}%`" /> <!-- Include percentage text -->
+      <!-- :format="() => store.getUserScore" /> -->
+      <!-- :percentage="store.getProgressPercentage" -->
+
   </div>
 </template>
 
