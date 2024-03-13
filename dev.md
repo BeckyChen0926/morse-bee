@@ -1,3 +1,10 @@
+## Deploy to Github pages
+```shell
+yarn run vite build
+mv dist docs
+```
+Need to edit `docs/index.html` as [in this commit (delete `\`s)](https://github.com/ConorSheehan1/spelling-bee/commit/33f233365ccb67b928169234be5842beab25d463)
+
 ## Build Setup
 
 ```shell
