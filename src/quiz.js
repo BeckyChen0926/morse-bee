@@ -2,7 +2,6 @@ import allAnswers from "../data/allAnswers.json";
 import { useMainStore } from "../src/store";
 import { generateAnswerObjs } from "../src/utils";
 
-
 function preloadSounds() {
   const dict = {
     a: "https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg",
@@ -188,7 +187,7 @@ function playWordMorse(words) {
 
   const store = useMainStore();
   // console.log('quiz: ', store.answers.filter(answer => answer.length===4));
-  console.log('all answers from quiz.js: ', store.answers);
+  console.log("all answers from quiz.js: ", store.answers);
 
   // event listener of the buttons
   playButton.addEventListener("click", () => {

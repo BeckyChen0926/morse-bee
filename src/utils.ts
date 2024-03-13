@@ -86,20 +86,22 @@ const generateAnswerObjs = ({
   allAnswers: Array<Answer>;
   gameDate: Date;
 }): { todaysAnswerObj: Answer; yesterdaysAnswerObj: Answer } => {
-  const fourLetterAnswers = allAnswers.filter(answer => answer.answers.some(word => word.length === 4));
+  const fourLetterAnswers = allAnswers.filter((answer) =>
+    answer.answers.some((word) => word.length === 4)
+  );
 
   // use days since arbitrary epoch to ensure yesterdays answers is always 1 behind todays.
   const daysSinceEpoch = differenceInDays(gameDate, epoch);
   // pick next puzzle input, % len puzzles to restart if out of index (circular)
-  
+
   // const todaysAnswerObj = allAnswers[daysSinceEpoch % allAnswers.length];
   // const yesterdaysAnswerObj =
   //   allAnswers[(daysSinceEpoch - 1) % allAnswers.length];
 
-  const todaysAnswerObj = fourLetterAnswers[daysSinceEpoch % fourLetterAnswers.length];
-  const yesterdaysAnswerObj = fourLetterAnswers[(daysSinceEpoch - 1) % fourLetterAnswers.length];
-
-
+  const todaysAnswerObj =
+    fourLetterAnswers[daysSinceEpoch % fourLetterAnswers.length];
+  const yesterdaysAnswerObj =
+    fourLetterAnswers[(daysSinceEpoch - 1) % fourLetterAnswers.length];
 
   return { todaysAnswerObj, yesterdaysAnswerObj };
 };

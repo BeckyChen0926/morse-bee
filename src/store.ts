@@ -172,7 +172,6 @@ export const useMainStore = defineStore({
       });
       this.setYesterdaysAnswersAndLastGameDate({ yesterdaysAnswerObj });
 
-      
       // set yesterday and todays answers and letters
       const { answers, availableLetters, middleLetter } = todaysAnswerObj;
       // this.answers = answers.filter(answer=>answer.length===4);
