@@ -72,6 +72,9 @@ export const useMainStore = defineStore({
     getCorrectGuesses(): Array<string> {
       return Array.from(this.correctGuesses);
     },
+    clearCorrectGuesses(): void {
+      this.correctGuesses = new Set([]);
+    },
     getProgressIndex(): number {
       return (
         this.getScoreLevels.filter((v) => v <= this.getUserScore).length - 1
@@ -163,16 +166,21 @@ export const useMainStore = defineStore({
 
       const { todaysAnswerObj, yesterdaysAnswerObj } = generateAnswerObjs({
         allAnswers,
+
+        // allAnswers: allAnswers.filter(answer => answer.answers.length === 4),
         gameDate: this.gameDate,
       });
       this.setYesterdaysAnswersAndLastGameDate({ yesterdaysAnswerObj });
 
+      
       // set yesterday and todays answers and letters
       const { answers, availableLetters, middleLetter } = todaysAnswerObj;
-
+      // this.answers = answers.filter(answer=>answer.length===4);
       this.answers = answers;
       this.availableLetters = availableLetters;
       this.middleLetter = middleLetter;
+
+      //console.log('stores: ', this.answers);
     },
     setYesterdaysAnswersAndLastGameDate({
       yesterdaysAnswerObj,

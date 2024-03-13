@@ -1,4 +1,7 @@
 import allAnswers from "../data/allAnswers.json";
+import { useMainStore } from "../src/store";
+import { generateAnswerObjs } from "../src/utils";
+
 
 function preloadSounds() {
   const dict = {
@@ -183,8 +186,13 @@ function playWordMorse(words) {
     modal.style.display = "none";
   };
 
+  const store = useMainStore();
+  // console.log('quiz: ', store.answers.filter(answer => answer.length===4));
+  console.log('all answers from quiz.js: ', store.answers);
+
   // event listener of the buttons
   playButton.addEventListener("click", () => {
+    store.clearCorrectGuesses; // clears all recorded correct guesses
     currentIndex = 0; // Reset currentIndex when starting the quiz again
     isPlaying = true;
     modal.style.display = "block";
