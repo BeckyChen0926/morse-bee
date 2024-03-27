@@ -9,6 +9,9 @@ const showRanking = ref(false);
 const progressPercentage = computed(() => {
   const totalQuestions = store.answers.length;
   const correctAnswers = store.correctGuesses.size;
+  if (correctAnswers == 0) {
+    return 0;
+  }
   return (correctAnswers / totalQuestions) * 100;
 });
 

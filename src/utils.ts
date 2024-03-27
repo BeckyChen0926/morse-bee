@@ -82,16 +82,24 @@ const epoch = new Date("2022-01-01");
 const generateAnswerObjs = ({
   allAnswers,
   gameDate,
+  daysSinceEpoch = 400,  //default to 400 if not specified
 }: {
   allAnswers: Array<Answer>;
   gameDate: Date;
+  daysSinceEpoch?: number; //optional parameter
 }): { todaysAnswerObj: Answer; yesterdaysAnswerObj: Answer } => {
   const fourLetterAnswers = allAnswers.filter((answer) =>
     answer.answers.some((word) => word.length === 4)
   );
 
   // use days since arbitrary epoch to ensure yesterdays answers is always 1 behind todays.
-  const daysSinceEpoch = differenceInDays(gameDate, epoch);
+  // const daysSinceEpoch = differenceInDays(gameDate, epoch);
+
+  // fixed daysinceepoch
+  // const daysSinceEpoch = 400;
+  
+
+
   // pick next puzzle input, % len puzzles to restart if out of index (circular)
 
   // const todaysAnswerObj = allAnswers[daysSinceEpoch % allAnswers.length];

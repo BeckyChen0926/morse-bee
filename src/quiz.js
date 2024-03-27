@@ -1,6 +1,6 @@
 import allAnswers from "../data/allAnswers.json";
 import { useMainStore } from "../src/store";
-import { generateAnswerObjs } from "../src/utils";
+import {} from "../src/utils";
 
 function preloadSounds() {
   const dict = {
@@ -188,6 +188,11 @@ function playWordMorse(words) {
   const store = useMainStore();
   // console.log('quiz: ', store.answers.filter(answer => answer.length===4));
   console.log("all answers from quiz.js: ", store.answers);
+  console.log("most common starting letter: ", store.mostCommonStartingLetter);
+  console.log("most common starting pair: ", store.mostCommonStartingPair);
+  console.log('4 letter words #: ', store.fourLetterWordCount);
+
+
 
   // event listener of the buttons
   playButton.addEventListener("click", () => {

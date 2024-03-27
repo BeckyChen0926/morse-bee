@@ -13,6 +13,11 @@ export const useMainStore = defineStore({
     // correctGuesses as array caused infinite update issue when game was open in multiple tabs. see #6
     correctGuesses: useStorage("correctGuesses", new Set([]) as Set<string>),
     answers: useStorage("answers", [] as Array<string>),
+
+    mostCommonStartingLetter: useStorage("mostCommonStartingLetter", '' as string),
+    mostCommonStartingPair: useStorage("mostCommonStartingPair", '' as string),
+    fourLetterWordCount: useStorage('fourLetterWordCount', 0 as Number),
+
     availableLetters: useStorage("availableLetters", "" as string),
     middleLetter: useStorage("middleLetter", "" as string),
     gameDate: useStorage("gameDate", epoch as Date),
@@ -129,11 +134,13 @@ export const useMainStore = defineStore({
           message: $t("missing middle letter"),
         });
       }
+
       if (!this.answers.includes(guess)) {
         return this.showMessage({
           message: $t("not in word list"),
         });
       }
+
       if (this.correctGuesses.has(guess)) {
         return this.showMessage({
           message: $t("already found"),
@@ -154,24 +161,11 @@ export const useMainStore = defineStore({
         });
       }
     },
-    // failed attempt at modularizing 
-    // findMostCommonStartingLetters({ allAnswers }: { allAnswers: Array<Answer> }, numLetters: number): string[] {
-    //   const startingLetterCounts: Record<string, number> = {};
 
-    //   allAnswers.forEach(answer => {
-    //     const startingLetters = answer.answers.map(word => word.substring(0, numLetters).toLowerCase());
-
-    //     startingLetters.forEach(letter => {
-    //       startingLetterCounts[letter] = (startingLetterCounts[letter] || 0) + 1;
-    //     });
-    //   });
-
-    //   const sortedLetters = Object.keys(startingLetterCounts).sort((a, b) => startingLetterCounts[b] - startingLetterCounts[a]);
-
-    //   return sortedLetters.slice(0, 2); // Return up to the top two most common starting letters
-    // },
     startGame({ allAnswers }: { allAnswers: Array<Answer> }) {
-      const now = new Date();
+      // const now = new Date();
+      const now = new Date('2024-03-13T00:00:00'); // Set to March 13, 2024, at midnight
+
       // if it's the same day, don't restart the game
       if (isSameDay(this.getGameDate, now)) return false;
 
@@ -180,44 +174,52 @@ export const useMainStore = defineStore({
       // new game so reset guesses
       this.correctGuesses = new Set([]);
 
-      // moduralize draft
-      // const mostCommonStartingLetter = findMostCommonStartingLetters(allAnswers, 1);
-
-
-      // Determine the most common starting letter
-      const startingLetterCounts: Record<string, number> = {};
-      allAnswers.forEach(answer => {
-        const startingLetter = answer.answers.map(word => word.charAt(0).toLowerCase());
-        startingLetter.forEach(letter => {
-          startingLetterCounts[letter] = (startingLetterCounts[letter] || 0) + 1;
-        });
-      });
-
-      const mostCommonStartingLetter = Object.keys(startingLetterCounts).reduce((a, b) => startingLetterCounts[a] > startingLetterCounts[b] ? a : b);
-      
-      // Determine the most common starting 2 letters
-      const startingLetterPairs: Record<string, number> = {};
-      allAnswers.forEach(answer => {
-        answer.answers.forEach(word => {
-          const startingPair = word.substring(0, 2).toLowerCase();
-          startingLetterPairs[startingPair] = (startingLetterPairs[startingPair] || 0) + 1;
-        });
-      });
-
-      const mostCommonStartingPair = Object.keys(startingLetterPairs).reduce((a, b) => startingLetterPairs[a] > startingLetterPairs[b] ? a : b);
-
-
       const { todaysAnswerObj, yesterdaysAnswerObj } = generateAnswerObjs({
         allAnswers,
 
         // allAnswers: allAnswers.filter(answer => answer.answers.length === 4),
         gameDate: this.gameDate,
+        daysSinceEpoch: 250
       });
       this.setYesterdaysAnswersAndLastGameDate({ yesterdaysAnswerObj });
+
 
       // set yesterday and todays answers and letters
       const { answers, availableLetters, middleLetter } = todaysAnswerObj;
       // this.answers = answers.filter(answer=>answer.length===4);
+
+      this.fourLetterWordCount = answers.filter(answer => answer.length === 4).length;
+
+      const startingLetterCounts: Record<string, number> = {};
+      answers.forEach(word => {
+          const startingLetter = word.charAt(0).toLowerCase();
+          startingLetterCounts[startingLetter] = (startingLetterCounts[startingLetter] || 0) + 1;
+      });
+
+
+      const mostCommonStartingLetter = Object.keys(startingLetterCounts).reduce((a, b) => startingLetterCounts[a] > startingLetterCounts[b] ? a : b);
+      this.mostCommonStartingLetter = mostCommonStartingLetter;
+
+
+      // Determine the most common starting 2 letters
+      const startingLetterPairs: Record<string, number> = {};
+      answers.forEach(word => {
+          const startingPair = word.substring(0, 2).toLowerCase();
+          startingLetterPairs[startingPair] = (startingLetterPairs[startingPair] || 0) + 1;
+      });
+
+      let maxCount = 0;
+      let mostCommonStartingPair = '';
+
+      Object.keys(startingLetterPairs).forEach(pair => {
+        if (startingLetterPairs[pair] > maxCount) {
+          maxCount = startingLetterPairs[pair];
+          mostCommonStartingPair = pair;
+        }
+      });
+      this.mostCommonStartingPair = mostCommonStartingPair;
+
+
 
       // most common starting letter
       this.answers = answers.filter(word => word.length===4 && word.charAt(0).toLowerCase() === mostCommonStartingLetter);
