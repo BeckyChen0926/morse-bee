@@ -128,7 +128,7 @@ const displayMorse = (letter: any) => {
     z: "_ _..",
   };
   const morse = dict[letter];
-  console.log(morse);
+  // console.log(morse);
   return morse.concat(" ", " ");
 };
 </script>

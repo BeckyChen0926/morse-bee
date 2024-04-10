@@ -20,6 +20,9 @@ export const useMainStore = defineStore({
 
     availableLetters: useStorage("availableLetters", "" as string),
     middleLetter: useStorage("middleLetter", "" as string),
+    
+    day: useStorage("day", 0 as Number),
+
     gameDate: useStorage("gameDate", epoch as Date),
     lastGameDate: useStorage("lastGameDate", new Date() as Date),
     // yesterdays puzzle
@@ -161,13 +164,20 @@ export const useMainStore = defineStore({
         });
       }
     },
-
-    startGame({ allAnswers }: { allAnswers: Array<Answer> }) {
+    // startGame({allAnswers }: {allAnswers: Array<Answer> }) {
+    startGame({ days,allAnswers }: { days:number; allAnswers: Array<Answer> }) : {
+      answers: string[];
+      mostCommonStartingLetter: string;
+      mostCommonStartingPair: string;
+      availableLetters: string;
+    } {
       // const now = new Date();
       const now = new Date('2024-03-13T00:00:00'); // Set to March 13, 2024, at midnight
 
+      this.day = days;
+
       // if it's the same day, don't restart the game
-      if (isSameDay(this.getGameDate, now)) return false;
+      // if (isSameDay(this.getGameDate, now)) return false;
 
       // set gameDate to clear guesses tomorrow
       this.gameDate = now;
@@ -179,7 +189,7 @@ export const useMainStore = defineStore({
 
         // allAnswers: allAnswers.filter(answer => answer.answers.length === 4),
         gameDate: this.gameDate,
-        daysSinceEpoch: 250
+        daysSinceEpoch: days
       });
       this.setYesterdaysAnswersAndLastGameDate({ yesterdaysAnswerObj });
 
@@ -231,6 +241,13 @@ export const useMainStore = defineStore({
       this.availableLetters = availableLetters;
       this.middleLetter = middleLetter;
 
+
+      return {
+        answers: this.answers,
+        mostCommonStartingLetter: this.mostCommonStartingLetter,
+        mostCommonStartingPair: this.mostCommonStartingPair,
+        availableLetters: this.availableLetters,
+      };
     },
     setYesterdaysAnswersAndLastGameDate({
       yesterdaysAnswerObj,

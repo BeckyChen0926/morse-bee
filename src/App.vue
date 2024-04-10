@@ -47,7 +47,26 @@ const onCloseCorrectGuesses = () => {
 
 onMounted(onToggleDarkMode);
 
-store.startGame({ allAnswers });
+// store.startGame({allAnswers }); //priginal
+
+// store.startGame({days:1, allAnswers });
+
+let dayLogs = [];
+
+let count = 1;
+while (count < 100) {
+  let answers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
+  let logData = {
+    "day #": count,
+    "letters": letters,
+    "answers #": letters.answers.length
+  };
+  dayLogs.push(logData);
+  count++;
+}
+
+console.log('day logs: \n', dayLogs);
+
 // TODO: remove i18n
 // TODO: extra not in spellingbee: track scores across days
 // TODO: add shake animation on incorrect submission?

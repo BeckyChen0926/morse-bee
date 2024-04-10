@@ -187,10 +187,13 @@ function playWordMorse(words) {
 
   const store = useMainStore();
   // console.log('quiz: ', store.answers.filter(answer => answer.length===4));
-  console.log("all answers from quiz.js: ", store.answers);
-  console.log("most common starting letter: ", store.mostCommonStartingLetter);
-  console.log("most common starting pair: ", store.mostCommonStartingPair);
-  console.log('4 letter words #: ', store.fourLetterWordCount);
+  
+  // console.log("all answers from quiz.js: ", store.answers);
+  // console.log("most common starting letter: ", store.mostCommonStartingLetter);
+  // console.log("most common starting pair: ", store.mostCommonStartingPair);
+  // console.log('4 letter words #: ', store.fourLetterWordCount);
+  // console.log('day #: ', store.day);
+
 
 
 
