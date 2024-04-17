@@ -7,7 +7,7 @@ const showRanking = ref(false);
 
 
 const progressPercentage = computed(() => {
-  const totalQuestions = store.answers.length;
+  const totalQuestions = store.pairanswers.length;
   const correctAnswers = store.correctGuesses.size;
   if (correctAnswers == 0) {
     return 0;
@@ -32,7 +32,7 @@ const progressPercentage = computed(() => {
   </el-dialog>
   <div class="row" @click="showRanking = true">
     <strong class="rank-level">
-      {{ $t(`rank.${store.getProgressIndex}`) }}
+      {{'Find 8 four-letter words starting with "po"' }}
     </strong>
     <!-- can't use bl-yellow directly, need to pass hex in here -->
     <el-progress

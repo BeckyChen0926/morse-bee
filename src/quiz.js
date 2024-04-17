@@ -67,7 +67,7 @@ function getWords(letters) {
         // console.log(answer.answers.length);
         for (const a of answer.answers) {
           // only quiz the user on words with 4 or less letters
-          if (a.length <= 4) {
+          if (a.length <= 4 &&  a.substring(0, 2).toLowerCase() === 'po') {
             answerWords.push(a);
           }
         }

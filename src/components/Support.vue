@@ -1,5 +1,5 @@
-<template>
-  <span>If you're enjoying the game you can show your support by</span>
+<!-- <template>
+  <span>You found all the words! Thank you for playing</span>
   <ul>
     <li>
       Starring the project on
@@ -38,4 +38,4 @@ html.dark {
     filter: invert(0.8);
   }
 }
-</style>
+</style> -->

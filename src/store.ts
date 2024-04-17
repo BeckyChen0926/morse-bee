@@ -13,6 +13,8 @@ export const useMainStore = defineStore({
     // correctGuesses as array caused infinite update issue when game was open in multiple tabs. see #6
     correctGuesses: useStorage("correctGuesses", new Set([]) as Set<string>),
     answers: useStorage("answers", [] as Array<string>),
+    pairanswers: useStorage("answers", [] as Array<string>),
+
 
     mostCommonStartingLetter: useStorage("mostCommonStartingLetter", '' as string),
     mostCommonStartingPair: useStorage("mostCommonStartingPair", '' as string),
@@ -167,6 +169,7 @@ export const useMainStore = defineStore({
     // startGame({allAnswers }: {allAnswers: Array<Answer> }) {
     startGame({ days,allAnswers }: { days:number; allAnswers: Array<Answer> }) : {
       answers: string[];
+      pairanswers: string[];
       mostCommonStartingLetter: string;
       mostCommonStartingPair: string;
       availableLetters: string;
@@ -235,7 +238,7 @@ export const useMainStore = defineStore({
       this.answers = answers.filter(word => word.length===4 && word.charAt(0).toLowerCase() === mostCommonStartingLetter);
 
       // most common starting pair
-      // this.answers = answers.filter(word =>word.length===4 &&  word.substring(0, 2).toLowerCase() === mostCommonStartingPair);
+      this.pairanswers = answers.filter(word =>word.length===4 &&  word.substring(0, 2).toLowerCase() === mostCommonStartingPair);
 
       // this.answers = answers;
       this.availableLetters = availableLetters;
@@ -244,6 +247,7 @@ export const useMainStore = defineStore({
 
       return {
         answers: this.answers,
+        pairanswers: this.pairanswers,
         mostCommonStartingLetter: this.mostCommonStartingLetter,
         mostCommonStartingPair: this.mostCommonStartingPair,
         availableLetters: this.availableLetters,

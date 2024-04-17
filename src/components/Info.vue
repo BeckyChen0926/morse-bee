@@ -1,29 +1,31 @@
 <script setup lang="ts">
 import Support from "./Support.vue";
-const email = "conor.sheehan.dev@gmail.com";
 </script>
 
 <template>
   <div class="info-dialog">
-    <h3>{{ $t("helpCreateWords") }}</h3>
+    <h3>Create 8 four-letter words using letters from the hive</h3>
 
     <ul>
-      <li>{{ $t("helpWordRule1") }}.</li>
-      <li>{{ $t("helpWordRule2") }}.</li>
-      <li>{{ $t("helpWordRule3") }}.</li>
+      <li>Words must contain 4 letters.</li>
+      <li>There are 8 target four-letter words.</li>
+      <li>Words must include the center letter (marked yellow).</li>
+      <li>Letters can be used more than once.</li>
     </ul>
 
-    <h3>{{ $t("helpScorePoints") }}</h3>
+    <h3>Find all 8 words starting with "po" to complete the yellow progress bar</h3>
 
-    <ul>
+    <p>This game is modified from the New York Times Spelling Bee game.</p>
+
+    <!-- <ul>
       <li>{{ $t("helpPointsRule1") }}.</li>
       <li>{{ $t("helpPointsRule2") }}.</li>
       <li>{{ $t("helpPointsRule3A") }}. {{ $t("helpPointsRule3B") }}!</li>
-    </ul>
-
+    </ul> -->
+<!-- 
     <h3>Support</h3>
-    <Support />
-
+    <Support /> -->
+<!-- 
     <h3>{{ $t("AboutGame") }}</h3>
     <ul>
       <li>
@@ -64,7 +66,7 @@ const email = "conor.sheehan.dev@gmail.com";
           email
         }}</el-link>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 

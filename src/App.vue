@@ -54,12 +54,13 @@ onMounted(onToggleDarkMode);
 let dayLogs = [];
 
 let count = 1;
-while (count < 100) {
-  let answers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
+while (count < 89) {
+  let answers,pairanswers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
   let logData = {
     "day #": count,
     "letters": letters,
-    "answers #": letters.answers.length
+    "answers #": letters.answers.length,
+    "pair answers #": letters.pairanswers.length
   };
   dayLogs.push(logData);
   count++;
