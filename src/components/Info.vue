@@ -10,10 +10,16 @@ import Support from "./Support.vue";
       <li>Words must contain 4 letters.</li>
       <li>There are 8 target four-letter words.</li>
       <li>Words must include the center letter (marked yellow).</li>
-      <li>Letters can be used more than once.</li>
+      <li>All letters can be used more than once.</li>
     </ul>
 
-    <h3>Find all 8 words starting with "po" to complete the yellow progress bar</h3>
+    <h3>Find all 8 words starting with "po" to complete the yellow progress bar up to 100%</h3>
+
+    <ul>
+      <li>Press "Enter" button to submit a word.</li>
+      <li>Press "Delete" button to delete a letter.</li>
+      <li>Press "Shuffle" button in the middle to shuffle letter placement in the hive.</li>
+    </ul>
 
     <p>This game is modified from the New York Times Spelling Bee game.</p>
 

@@ -54,6 +54,7 @@ onMounted(onToggleDarkMode);
 let dayLogs = [];
 
 let count = 1;
+// For Sam: change the date here 
 while (count < 89) {
   let answers,pairanswers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
   let logData = {

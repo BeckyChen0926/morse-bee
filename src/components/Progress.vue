@@ -12,13 +12,13 @@ const progressPercentage = computed(() => {
   if (correctAnswers == 0) {
     return 0;
   }
-  return (correctAnswers / totalQuestions) * 100;
+  return Math.ceil((correctAnswers / totalQuestions) * 100);
 });
 
 </script>
 
 <template>
-  <el-dialog v-model="showRanking" :title="$t('Ranking')">
+  <!-- <el-dialog v-model="showRanking" :title="$t('Ranking')">
     <div class="ranking-dialog">
       <p>{{ $t("RankMSG") }}:</p>
       <ul>
@@ -29,7 +29,7 @@ const progressPercentage = computed(() => {
         </li>
       </ul>
     </div>
-  </el-dialog>
+  </el-dialog> -->
   <div class="row" @click="showRanking = true">
     <strong class="rank-level">
       {{'Find 8 four-letter words starting with "po"' }}
