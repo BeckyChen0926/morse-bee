@@ -28,6 +28,11 @@ let userGuess = ref("");
 
 const onKeyPress = (e: KeyboardEvent) => {
   const pressedKey = e.key.toLowerCase();
+  const quizModal = document.getElementById("quizModal");
+  if (quizModal && quizModal.style.display === "block") {
+    // do not handle keypress for hive game when modal is up
+    return;
+  }
   if (pressedKey === "enter")
     return submitGuess({ $t: t, guess: userGuess.value });
   if (["backspace", "delete"].includes(pressedKey)) {
@@ -134,14 +139,14 @@ const displayMorse = (letter: any) => {
 </script>
 
 <template>
-  <button id="playQuiz">Play Quiz</button>
+  <!-- <button id="playQuiz">Play Quiz</button>
   <button id="stopQuiz">Stop Quiz</button>
   <button id="pauseQuiz">Pause Quiz</button>
   <button id="continueQuiz">Continue Quiz</button>
-  <button id="checkQuiz">Check Quiz</button>
+  <button id="checkQuiz">Check Quiz</button> -->
 
   <!-- popup modal when play quiz is clicked -->
-  <div id="quizModal" class="modal">
+  <!-- <div id="quizModal" class="modal">
     <div class="quizModal-content">
       <p>
         Please press 'space' when you hear a pause between two groups of Morse
@@ -152,6 +157,17 @@ const displayMorse = (letter: any) => {
       <span class="close">&times;</span>
     </div>
     <textarea id="userAnswer"></textarea>
+  </div> -->
+
+  <button id="startQuiz">Start Quiz</button>
+
+  <!-- Modal popup for the quiz -->
+  <div id="quizModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <input type="text" id="userAnswer" placeholder="Enter your answer here">
+      <button id="checkQuiz">Check Answer</button>
+    </div>
   </div>
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">

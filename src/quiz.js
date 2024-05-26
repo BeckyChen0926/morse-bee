@@ -2,6 +2,17 @@ import allAnswers from "../data/allAnswers.json";
 import { useMainStore } from "../src/store";
 import {} from "../src/utils";
 
+const store = useMainStore();
+let count = 88;
+let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: count, allAnswers });
+console.log("letters: " + todayLetters.availableLetters);
+console.log('answers: ' + todayLetters.pairanswers);
+let todayAnswers = [];
+todayLetters.pairanswers.forEach((w) => {
+  todayAnswers.push(w)
+});
+console.log(todayAnswers);
+
 function preloadSounds() {
   const dict = {
     a: "https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg",
@@ -42,43 +53,88 @@ function preloadSounds() {
 // Call the preloadSounds function during initialization
 preloadSounds();
 
-// fetch today's 7 hive letters
-function getHiveLetters() {
-  const hives = document.querySelectorAll(".cell-letter");
-  const letters = [];
-  hives.forEach((letter) => {
-    letters.push(letter.textContent);
-  });
-  return letters.sort();
+let currentIndex = 0;
+
+function getNextWord(){
+  if (currentIndex < todayAnswers.length){
+    return todayAnswers[currentIndex++];
+  } else{
+    console.log('end of quiz!');
+    return null;
+  }
 }
 
-// fetch the possible words the 7 letters can make from allAnswers.json
-function getWords(letters) {
-  return new Promise((resolve, reject) => {
-    if (!allAnswers) {
-      reject("allAnswers is undefined");
+let currWord = '';
+
+function startGame(){
+  const nextWord = getNextWord();
+  if (nextWord){
+    currWord = nextWord;
+    document.getElementById("userAnswer").focus();
+    document.getElementById("userAnswer").select()
+    playWordMorse(currWord);
+  } else {
+    alert('Quiz finished!');
+  }
+}
+
+function checkUserInput(userInput){
+  // if correct, say correct and play the next word
+  if (userInput == currWord){
+    alert('correct!');
+    document.getElementById("userAnswer").value='';
+    document.getElementById("userAnswer").focus();
+    document.getElementById("userAnswer").select()
+    const nextWord = getNextWord();
+    if (nextWord){
+      currWord = nextWord;
+      playWordMorse(currWord);
+    } else{
+      alert('quiz finished!');
     }
-
-    letters = letters.join("");
-    const answerWords = [];
-
-    allAnswers.forEach((answer) => {
-      if (answer.availableLetters === letters) {
-        // console.log(answer.answers.length);
-        for (const a of answer.answers) {
-          // only quiz the user on words with 4 or less letters
-          if (a.length <= 4 &&  a.substring(0, 2).toLowerCase() === 'po') {
-            answerWords.push(a);
-          }
-        }
-      }
-    });
-
-    resolve(answerWords);
-  });
+  } else {
+    // currently, play until the user gets it right
+    alert('wrong, try again!');
+    playWordMorse(currWord);
+  }
 }
 
-function playHiveSound(letter) {
+
+var modal = document.getElementById("quizModal");
+
+modal.addEventListener("click", () => {
+  if (modal.style.display === "none") {
+    window.removeEventListener("keyup", checkQuizEnter);
+  }
+});
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+document.getElementById("startQuiz").addEventListener("click", () => {
+  modal.style.display = "block";
+  startGame();
+  window.addEventListener('keyup',checkQuizEnter);
+});
+
+document.getElementById("checkQuiz").addEventListener("click", () => {
+  const userAnswer = document.getElementById("userAnswer").value.trim();
+  checkUserInput(userAnswer);
+});
+
+function checkQuizEnter(e){
+  if (e.key.toLowerCase() === 'enter'){
+    const userAnswer = document.getElementById("userAnswer").value.trim();
+    checkUserInput(userAnswer);
+  }
+}
+
+async function playHiveSound(letter) {
   const audio = document.getElementById("hiveAudio");
   const dict = {
     a: "https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg",
@@ -109,7 +165,7 @@ function playHiveSound(letter) {
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
 
-  if (audio) {
+  if (audio && dict[letter]) {
     audio.src = dict[letter];
 
     // only play if all sounds are loaded and the last sound has ended
@@ -128,157 +184,10 @@ function playHiveSound(letter) {
   }
 }
 
-function playWordMorse(words) {
-  const playButton = document.getElementById("playQuiz");
-  const stopButton = document.getElementById("stopQuiz");
-  const pauseButton = document.getElementById("pauseQuiz");
-  const continueButton = document.getElementById("continueQuiz");
-  let currentIndex = 0;
-  let isPlaying = false;
-  let isPaused = false;
+async function playWordMorse(word) {
 
-  async function playNextLetter() {
-    if (currentIndex < words.length && isPlaying) {
-      const word = words[currentIndex];
-      console.log("curr word: " + word);
-
-      for (const letter of word) {
-        await playHiveSound(letter);
-
-        if (!isPlaying) {
-          // Stop if the stop button was pressed during playback
-          currentIndex = words.length;
-          break;
-        }
-
-        if (isPaused) {
-          // Pause if the pause button was pressed during playback
-          await new Promise((resolve) => {
-            // when paused, set up eventlister for the continue button
-            continueButton.addEventListener(
-              "click",
-              function onContinueClick() {
-                // remove continue eventlistener when continue is clicked once
-                continueButton.removeEventListener("click", onContinueClick);
-                resolve();
-              },
-              { once: true }
-            );
-          });
-        }
-      }
-      // 2 seconds gap between each word. no gap between each letter of the word
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      currentIndex++;
-      playNextLetter();
-    }
+  for (const letter of word) {
+    await playHiveSound(letter);
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
-
-  var modal = document.getElementById("quizModal");
-
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
-    modal.style.display = "none";
-  };
-
-  const store = useMainStore();
-  // console.log('quiz: ', store.answers.filter(answer => answer.length===4));
-  
-  // console.log("all answers from quiz.js: ", store.answers);
-  // console.log("most common starting letter: ", store.mostCommonStartingLetter);
-  // console.log("most common starting pair: ", store.mostCommonStartingPair);
-  // console.log('4 letter words #: ', store.fourLetterWordCount);
-  // console.log('day #: ', store.day);
-
-
-
-
-  // event listener of the buttons
-  playButton.addEventListener("click", () => {
-    store.clearCorrectGuesses; // clears all recorded correct guesses
-    currentIndex = 0; // Reset currentIndex when starting the quiz again
-    isPlaying = true;
-    modal.style.display = "block";
-    setTimeout(() => {
-      playNextLetter(); // Start playing quiz after 5 seconds
-    }, 5000);
-  });
-
-  stopButton.addEventListener("click", () => {
-    isPlaying = false;
-    currentIndex = words.length;
-    isPaused = false; // Reset isPaused when stopping the quiz
-  });
-
-  pauseButton.addEventListener("click", () => {
-    isPaused = true;
-  });
-
-  continueButton.addEventListener("click", () => {
-    isPaused = false;
-  });
 }
-
-const letters = getHiveLetters();
-console.log("letters: " + letters);
-
-let morseAnswer = "";
-
-getWords(letters)
-  .then((words) => {
-    words = words.flat();
-    morseAnswer = words.join(" ");
-    console.log("possible answers: " + words);
-    // console.log(morseAnswer);
-    playWordMorse(words);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-
-function showAnswers(userAnswer) {
-  var textarea = document.getElementById("userAnswer");
-  var ans = document.createElement("div");
-  ans.id = "corAns"; //correct answer
-  ans.style.cssText =
-    'width:90%; padding-left: 3%; font-family:"Space Mono",monospace; font-style: normal; text-align: left; font-size: 13px';
-  var temp = "";
-  for (var i = 0; i < morseAnswer.length; i++) {
-    temp += morseAnswer[i] + " ";
-    if (i + (1 % 16) == 0) {
-      temp += "\n";
-    }
-  }
-  var correctAns = "\n\nCorrect Answer:\n\n" + temp; // Assuming morseAnswer has been defined and is also a string
-  ans.innerHTML = correctAns;
-  var marked = ""; // Variable to store the colored text
-  var wrong_count = 0;
-
-  // Compare each character of userAnswer with morseAnswer
-  for (var i = 0; i < userAnswer.length && i < morseAnswer.length; i++) {
-    // If characters match, add them normally
-    if (userAnswer[i] === morseAnswer[i]) {
-      marked += " " + userAnswer[i];
-    } else {
-      // If characters do not match, wrap them in a span with red color
-      // coloredText += '<span style="color: red">' + userAnswer[i] + '</span>';
-      marked += "[" + userAnswer[i] + "]";
-      wrong_count++;
-    }
-  }
-
-  document.querySelector("#quizModal").appendChild(ans);
-
-  textarea.value = marked;
-}
-
-var checkQuiz = document.getElementById("checkQuiz");
-
-checkQuiz.onclick = function () {
-  var userQuizAnswer = document.getElementById("userAnswer").value;
-  showAnswers(userQuizAnswer);
-};
