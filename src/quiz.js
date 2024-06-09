@@ -13,6 +13,12 @@ todayLetters.pairanswers.forEach((w) => {
 });
 console.log(todayAnswers);
 
+let quizStartTime = new Date();
+let quizEndTime = new Date();
+let morseStartTime = new Date();
+let morseEndTime = new Date();
+let gameEndTime = new Date();
+
 function preloadSounds() {
   const dict = {
     a: "https://upload.wikimedia.org/wikipedia/commons/f/f3/A_morse_code.ogg",
@@ -71,7 +77,8 @@ function startGame(){
   if (nextWord){
     currWord = nextWord;
     document.getElementById("userAnswer").focus();
-    document.getElementById("userAnswer").select()
+    document.getElementById("userAnswer").select();
+    quizStartTime = new Date();
     playWordMorse(currWord);
   } else {
     alert('Quiz finished!');
@@ -81,13 +88,16 @@ function startGame(){
 function checkUserInput(userInput){
   // if correct, say correct and play the next word
   if (userInput == currWord){
+    quizEndTime = new Date();
     alert('correct!');
+    quizInfo(currWord,userInput);
     document.getElementById("userAnswer").value='';
     document.getElementById("userAnswer").focus();
     document.getElementById("userAnswer").select()
     const nextWord = getNextWord();
     if (nextWord){
       currWord = nextWord;
+      quizStartTime = new Date();
       playWordMorse(currWord);
     } else{
       alert('quiz finished!');
@@ -97,6 +107,47 @@ function checkUserInput(userInput){
     alert('wrong, try again!');
     playWordMorse(currWord);
   }
+}
+
+function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+  // code that puts everything in a google doc
+  let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+  let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+  var script_result = {};
+
+  res_key.forEach(function (k, i) {
+      script_result[k] = res_val[i];
+  })
+
+  console.log(JSON.stringify(script_result));
+
+  const url = "https://script.google.com/macros/s/AKfycbzVqqY0KLOlAuvOeeDwCOrgh6yXUGgOtoBhqHzV6Opejh9Thi8tp_srZyRwy38ZGRcQ/exec";
+
+  fetch(url,{
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'no-cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow', // manual, *follow, error
+    body: JSON.stringify(script_result)})
+}
+
+function quizInfo(word,userInput){
+  console.log('---------------------quiz info -------------------');
+  console.log('correct answer: '+word);
+  console.log('user answer: ' + userInput);
+  console.log('hive letters: '+todayLetters.availableLetters);
+  console.log('quiz start time: '+quizStartTime);
+  console.log('quiz end time: '+quizEndTime);
+  console.log('morse start time: ' + morseStartTime);
+  console.log('morse end time: '+morseEndTime);
+  let morseDuration = (morseEndTime.getTime() - morseStartTime.getTime())/1000;
+  console.log('morse duration: ' + morseDuration)
+  let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
+  console.log('answer duration: ' + answerDuration);
+  sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
 }
 
 
@@ -118,6 +169,8 @@ span.onclick = function () {
 
 document.getElementById("startQuiz").addEventListener("click", () => {
   modal.style.display = "block";
+  gameEndTime = new Date();
+  console.log('game end time: ' + gameEndTime);
   startGame();
   window.addEventListener('keyup',checkQuizEnter);
 });
@@ -185,9 +238,10 @@ async function playHiveSound(letter) {
 }
 
 async function playWordMorse(word) {
-
+  morseStartTime = new Date();
   for (const letter of word) {
     await playHiveSound(letter);
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
+  morseEndTime = new Date();
 }

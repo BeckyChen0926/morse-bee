@@ -50,6 +50,7 @@ onMounted(onToggleDarkMode);
 // store.startGame({allAnswers }); //priginal
 
 // store.startGame({days:1, allAnswers });
+let possibleAnswers = 0;
 
 let dayLogs = [];
 
@@ -57,6 +58,7 @@ let count = 1;
 // For Sam: change the date here 
 while (count < 89) {
   let answers,pairanswers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
+  possibleAnswers = letters.pairanswers;
   let logData = {
     "day #": count,
     "letters": letters,
@@ -68,6 +70,15 @@ while (count < 89) {
 }
 
 console.log('day logs: \n', dayLogs);
+
+let gameStartTime = new Date();
+
+window.onload = (event) => {
+  gameStartTime = new Date();
+  console.log('game start time: ' + gameStartTime);
+  console.log('possible answers: ' + possibleAnswers);
+};
+
 
 // TODO: remove i18n
 // TODO: extra not in spellingbee: track scores across days
