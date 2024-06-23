@@ -1,9 +1,26 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useMainStore } from "../store";
+import allAnswers from "../../data/allAnswers.json";
+
 
 const store = useMainStore();
 const showRanking = ref(false);
+
+let possibleAnswers = 0;
+
+let days={
+  1:89,
+  2:30,
+  3:23
+}
+
+let urlParams = new URLSearchParams(window.location.search);
+let pid = urlParams.get('PROLIFIC_PID');
+let dayNum = urlParams.get('day');
+
+let answers,pairanswers,comlet,pair,letters = store.startGame({ days: days[dayNum]-1, allAnswers });
+possibleAnswers = letters.pairanswers;
 
 
 const progressPercentage = computed(() => {
@@ -18,21 +35,10 @@ const progressPercentage = computed(() => {
 </script>
 
 <template>
-  <!-- <el-dialog v-model="showRanking" :title="$t('Ranking')">
-    <div class="ranking-dialog">
-      <p>{{ $t("RankMSG") }}:</p>
-      <ul>
-        <li
-          v-for="(scoreLevel, index) in store.getScoreLevels"
-          :key="`ranking${index}`">
-          {{ $t(`rank.${index}`) }} ({{ scoreLevel }})
-        </li>
-      </ul>
-    </div>
-  </el-dialog> -->
   <div class="row" @click="showRanking = true">
     <strong class="rank-level">
-      {{'Find 8 four-letter words starting with "po"' }}
+      {{`Find ${possibleAnswers.length} four-letter words starting with "${letters.mostCommonStartingPair
+}"` }}
     </strong>
     <!-- can't use bl-yellow directly, need to pass hex in here -->
     <el-progress

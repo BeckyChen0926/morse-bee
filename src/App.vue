@@ -47,16 +47,26 @@ const onCloseCorrectGuesses = () => {
 
 onMounted(onToggleDarkMode);
 
-// store.startGame({allAnswers }); //priginal
-
-// store.startGame({days:1, allAnswers });
+let possibleAnswers = 0;
 
 let dayLogs = [];
 
+let days={
+  1:89,
+  2:30,
+  3:23
+}
+
+let urlParams = new URLSearchParams(window.location.search);
+let pid = urlParams.get('PROLIFIC_PID');
+let dayNum = urlParams.get('day');
+console.log(dayNum);
+
 let count = 1;
-// For Sam: change the date here 
-while (count < 89) {
+//change the date here 
+while (count < days[dayNum]) { //originally 89
   let answers,pairanswers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
+  possibleAnswers = letters.pairanswers;
   let logData = {
     "day #": count,
     "letters": letters,
@@ -68,6 +78,15 @@ while (count < 89) {
 }
 
 console.log('day logs: \n', dayLogs);
+
+let gameStartTime = new Date();
+
+window.onload = (event) => {
+  gameStartTime = new Date();
+  console.log('game start time: ' + gameStartTime);
+  console.log('possible answers: ' + possibleAnswers);
+};
+
 
 // TODO: remove i18n
 // TODO: extra not in spellingbee: track scores across days
