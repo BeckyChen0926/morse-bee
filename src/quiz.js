@@ -3,8 +3,17 @@ import { useMainStore } from "../src/store";
 import {} from "../src/utils";
 
 const store = useMainStore();
-let count = 88;
-let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: count, allAnswers });
+
+let days={
+  1:89,
+  2:30,
+  3:23
+}
+
+let urlParams = new URLSearchParams(window.location.search);
+let pid = urlParams.get('PROLIFIC_PID');
+let dayNum = urlParams.get('day');
+let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: days[dayNum]-1, allAnswers });
 console.log("letters: " + todayLetters.availableLetters);
 console.log('answers: ' + todayLetters.pairanswers);
 let todayAnswers = [];
@@ -87,9 +96,13 @@ function startGame(){
 
 function checkUserInput(userInput){
   // if correct, say correct and play the next word
-  if (userInput == currWord){
+  if (userInput == currWord || userInput == 'skip'){
     quizEndTime = new Date();
-    alert('correct!');
+    if (userInput == 'skip'){
+      alert('skipped');
+    } else {
+      alert('correct!');
+    }
     quizInfo(currWord,userInput);
     document.getElementById("userAnswer").value='';
     document.getElementById("userAnswer").focus();
@@ -109,10 +122,14 @@ function checkUserInput(userInput){
   }
 }
 
-function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+// function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+//   // code that puts everything in a google doc
+//   let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+//   let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+function sendDataToSheet(hiveLetters){
   // code that puts everything in a google doc
-  let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
-  let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+  let res_key = ["hiveLetters"];
+  let res_val = [hiveLetters];
   var script_result = {};
 
   res_key.forEach(function (k, i) {
@@ -147,7 +164,8 @@ function quizInfo(word,userInput){
   console.log('morse duration: ' + morseDuration)
   let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
   console.log('answer duration: ' + answerDuration);
-  sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  // sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  sendDataToSheet(todayLetters.availableLetters);
 }
 
 
