@@ -7,6 +7,8 @@ mv dist docs
 ```
 Need to edit `docs/index.html` as [in this commit (delete 3 `/`s)](https://github.com/ConorSheehan1/spelling-bee/commit/33f233365ccb67b928169234be5842beab25d463)
 
+Need to edit `docs/index.css`. Search for `shuffle` and delete the `/` in `url(/shuffle-xxxx...)`
+
 Then in terminal
 ```terminal
 git add .
