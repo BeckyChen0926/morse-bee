@@ -10,14 +10,46 @@ const showRanking = ref(false);
 let possibleAnswers = 0;
 
 let days={
-  1:89,
-  2:30,
-  3:23
+  1:90,
+  2:91,
+  3:92
 }
 
 let urlParams = new URLSearchParams(window.location.search);
 let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
+
+document.addEventListener('DOMContentLoaded', () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    let gameParam = urlParams.get('game'); // Get the 'game' parameter
+
+    if (gameParam === 'false') {
+        console.log('should display');
+        let modal = document.getElementById('quizModal');
+        modal.style.display = 'block';
+        modal.style.zIndex = '99999';
+
+        let start = document.getElementById('startQuiz');
+        start.style.zIndex = '99999';
+
+        // Prevent closing the modal by clicking outside
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                event.stopPropagation();
+            }
+        };
+
+        let close = document.querySelector(".close");
+        close.style.display='none';
+
+        let how =document.querySelector('.el-dialog');
+        how.style.display='none';
+        let overlay = document.querySelectorAll('.el-overlay')[1];
+        overlay.style.zIndex='-9999';
+        overlay.style.backgroundColor='white';
+    }
+});
+
 
 let answers,pairanswers,comlet,pair,letters = store.startGame({ days: days[dayNum]-1, allAnswers });
 possibleAnswers = letters.pairanswers;
