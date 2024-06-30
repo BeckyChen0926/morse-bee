@@ -10,9 +10,10 @@ const showRanking = ref(false);
 let possibleAnswers = 0;
 
 let days={
-  1:90,
-  2:91,
-  3:92
+  1:97,
+  2:98,
+  3:99,
+  4:100
 }
 
 let urlParams = new URLSearchParams(window.location.search);
