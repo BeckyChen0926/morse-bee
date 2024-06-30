@@ -122,23 +122,20 @@ function checkUserInput(userInput){
   }
 }
 
-// function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
-//   // code that puts everything in a google doc
-//   let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
-//   let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
-function sendDataToSheet(hiveLetters){
+function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
   // code that puts everything in a google doc
-  let res_key = ["hiveLetters"];
-  let res_val = [hiveLetters];
+  let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+  let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
   var script_result = {};
 
   res_key.forEach(function (k, i) {
       script_result[k] = res_val[i];
   })
-
+  console.log("----------------------------")
   console.log(JSON.stringify(script_result));
+  console.log("----------------------------")
 
-  const url = "https://script.google.com/macros/s/AKfycbzVqqY0KLOlAuvOeeDwCOrgh6yXUGgOtoBhqHzV6Opejh9Thi8tp_srZyRwy38ZGRcQ/exec";
+  const url = "https://script.google.com/macros/s/AKfycby-C1CromFwuVKdDm-iJiVtXPRa-4UGg3T5gauJW0eVAu_UvTNFrm4NWp1FL0I1NpOKOw/exec";
 
   fetch(url,{
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -164,8 +161,8 @@ function quizInfo(word,userInput){
   console.log('morse duration: ' + morseDuration)
   let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
   console.log('answer duration: ' + answerDuration);
-  // sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
-  sendDataToSheet(todayLetters.availableLetters);
+  sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  // sendDataToSheet(todayLetters.availableLetters);
 }
 
 
