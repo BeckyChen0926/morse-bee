@@ -14,21 +14,23 @@ let days={
 let urlParams = new URLSearchParams(window.location.search);
 let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
+let isGame = urlParams.get('game');
+
 let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: days[dayNum]-1, allAnswers });
-console.log("letters: " + todayLetters.availableLetters);
-console.log('answers: ' + todayLetters.pairanswers);
+// console.log("letters: " + todayLetters.availableLetters);
+// console.log('answers: ' + todayLetters.pairanswers);
 let todayAnswers = [];
 todayLetters.pairanswers.forEach((w) => {
   todayAnswers.push(w)
 });
-console.log(todayAnswers);
+// console.log(todayAnswers);
 
 document.addEventListener('DOMContentLoaded', () => {
     let urlParams = new URLSearchParams(window.location.search);
     let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
     if (gameParam === 'false') {
-        console.log('should display');
+        // console.log('should display');
         let modal = document.getElementById('quizModal');
         modal.style.display = 'block';
         modal.style.zIndex = '99999';
@@ -155,18 +157,18 @@ function checkUserInput(userInput){
   }
 }
 
-function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+function sendDataToSheet(PID,day,isGame,hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
   // code that puts everything in a google doc
-  let res_key = ["hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
-  let res_val = [hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+  let res_key = ["PID","day","isGame","hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+  let res_val = [PID,day,isGame,hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
   var script_result = {};
 
   res_key.forEach(function (k, i) {
       script_result[k] = res_val[i];
   })
-  console.log("----------------------------")
-  console.log(JSON.stringify(script_result));
-  console.log("----------------------------")
+  // console.log("----------------------------")
+  // console.log(JSON.stringify(script_result));
+  // console.log("----------------------------")
 
   const url = "https://script.google.com/macros/s/AKfycby-C1CromFwuVKdDm-iJiVtXPRa-4UGg3T5gauJW0eVAu_UvTNFrm4NWp1FL0I1NpOKOw/exec";
 
@@ -182,19 +184,19 @@ function sendDataToSheet(hiveLetters, correctAnswer, userAnswer, quizStartTime, 
 }
 
 function quizInfo(word,userInput){
-  console.log('---------------------quiz info -------------------');
-  console.log('correct answer: '+word);
-  console.log('user answer: ' + userInput);
-  console.log('hive letters: '+todayLetters.availableLetters);
-  console.log('quiz start time: '+quizStartTime);
-  console.log('quiz end time: '+quizEndTime);
-  console.log('morse start time: ' + morseStartTime);
-  console.log('morse end time: '+morseEndTime);
+  // console.log('---------------------quiz info -------------------');
+  // console.log('correct answer: '+word);
+  // console.log('user answer: ' + userInput);
+  // console.log('hive letters: '+todayLetters.availableLetters);
+  // console.log('quiz start time: '+quizStartTime);
+  // console.log('quiz end time: '+quizEndTime);
+  // console.log('morse start time: ' + morseStartTime);
+  // console.log('morse end time: '+morseEndTime);
   let morseDuration = (morseEndTime.getTime() - morseStartTime.getTime())/1000;
-  console.log('morse duration: ' + morseDuration)
+  // console.log('morse duration: ' + morseDuration)
   let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
-  console.log('answer duration: ' + answerDuration);
-  sendDataToSheet(todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  // console.log('answer duration: ' + answerDuration);
+  sendDataToSheet(pid,dayNum,isGame,todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
   // sendDataToSheet(todayLetters.availableLetters);
 }
 
@@ -218,7 +220,7 @@ span.onclick = function () {
 document.getElementById("startQuiz").addEventListener("click", () => {
   modal.style.display = "block";
   gameEndTime = new Date();
-  console.log('game end time: ' + gameEndTime);
+  // console.log('game end time: ' + gameEndTime);
   startGame();
   window.addEventListener('keyup',checkQuizEnter);
 });
@@ -274,7 +276,7 @@ async function playHiveSound(letter) {
       audio.addEventListener("canplaythrough", function onCanPlayThrough() {
         audio.removeEventListener("canplaythrough", onCanPlayThrough);
         audio.play();
-        console.log("now playing: " + letter);
+        // console.log("now playing: " + letter);
       });
 
       audio.addEventListener("ended", function onEnded() {

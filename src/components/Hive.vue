@@ -88,7 +88,7 @@ const playHiveSound = (letter: any) => {
     z: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Z_morse_code.ogg",
   };
   var cover = document.getElementById("cover");
-  console.log(letter);
+  // console.log(letter);
   audio.src = dict[letter];
   if (audio) {
     if (cover) {
@@ -139,26 +139,6 @@ const displayMorse = (letter: any) => {
 </script>
 
 <template>
-  <!-- <button id="playQuiz">Play Quiz</button>
-  <button id="stopQuiz">Stop Quiz</button>
-  <button id="pauseQuiz">Pause Quiz</button>
-  <button id="continueQuiz">Continue Quiz</button>
-  <button id="checkQuiz">Check Quiz</button> -->
-
-  <!-- popup modal when play quiz is clicked -->
-  <!-- <div id="quizModal" class="modal">
-    <div class="quizModal-content">
-      <p>
-        Please press 'space' when you hear a pause between two groups of Morse
-        Code.
-        <br /><br />
-        You will hear some 4 letter words in Morse Code.
-      </p>
-      <span class="close">&times;</span>
-    </div>
-    <textarea id="userAnswer"></textarea>
-  </div> -->
-
   <button id="startQuiz">Start Quiz</button>
 
   <!-- Modal popup for the quiz -->

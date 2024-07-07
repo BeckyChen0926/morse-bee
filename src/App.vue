@@ -61,13 +61,13 @@ let days={
 let urlParams = new URLSearchParams(window.location.search);
 let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
-console.log(dayNum);
+// console.log(dayNum);
 document.addEventListener('DOMContentLoaded', () => {
     let urlParams = new URLSearchParams(window.location.search);
     let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
     if (gameParam === 'false') {
-        console.log('should display');
+        // console.log('should display');
         let modal = document.getElementById('quizModal');
         modal.style.display = 'block';
         modal.style.zIndex = '99999';
@@ -109,14 +109,14 @@ while (count < days[dayNum]) { //originally 89
   count++;
 }
 
-console.log('day logs: \n', dayLogs);
+// console.log('day logs: \n', dayLogs);
 
 let gameStartTime = new Date();
 
 window.onload = (event) => {
   gameStartTime = new Date();
-  console.log('game start time: ' + gameStartTime);
-  console.log('possible answers: ' + possibleAnswers);
+  // console.log('game start time: ' + gameStartTime);
+  // console.log('possible answers: ' + possibleAnswers);
 };
 
 

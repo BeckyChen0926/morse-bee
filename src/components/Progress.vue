@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
     if (gameParam === 'false') {
-        console.log('should display');
+        // console.log('should display');
         let modal = document.getElementById('quizModal');
         modal.style.display = 'block';
         modal.style.zIndex = '99999';
