@@ -218,6 +218,7 @@ span.onclick = function () {
 };
 
 document.getElementById("startQuiz").addEventListener("click", () => {
+  store.clearCorrectGuesses;
   modal.style.display = "block";
   gameEndTime = new Date();
   // console.log('game end time: ' + gameEndTime);

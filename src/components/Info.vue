@@ -13,7 +13,10 @@ import Support from "./Support.vue";
       <li>All letters can be used more than once.</li>
     </ul>
 
-    <h3>Find all 8 words starting with "po" to complete the yellow progress bar up to 100%</h3>
+    <h3>
+      Find all words starting with the starting letter pair given on the top of the page
+      to complete the yellow progress bar up to 100%.
+    </h3>
 
     <ul>
       <li>Press "Enter" button to submit a word.</li>

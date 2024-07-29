@@ -21,7 +21,7 @@ const numCorrectMessage = computed(() => {
 });
 
 const lastFiveGuesses = computed(() => {
-  const numGuessesToShow = Math.min(store.getCorrectGuesses.length, 5);
+  const numGuessesToShow = Math.min(store.getCorrectGuesses.length, 20);
   return store.getCorrectGuesses.reverse().slice(0, numGuessesToShow);
 });
 
@@ -38,7 +38,7 @@ const gridData = computed(
     @change="showWords.length == 2 ? $emit('open') : $emit('close')">
     <el-collapse-item>
       <template #title>
-        <template v-if="showWords.length === 2">
+        <template v-if="showWords.length === 20">
           {{ numCorrectMessage }}
         </template>
         <template v-else-if="lastFiveGuesses.length === 0">
