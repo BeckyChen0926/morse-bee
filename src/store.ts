@@ -12,6 +12,7 @@ export const useMainStore = defineStore({
     // todays puzzle
     // correctGuesses as array caused infinite update issue when game was open in multiple tabs. see #6
     correctGuesses: useStorage("correctGuesses", new Set([]) as Set<string>),
+    allGuesses: useStorage("allGuesses", [] as Array<string>),
     answers: useStorage("answers", [] as Array<string>),
     pairanswers: useStorage("answers", [] as Array<string>),
 
@@ -85,6 +86,12 @@ export const useMainStore = defineStore({
     clearCorrectGuesses(): void {
       this.correctGuesses = new Set([]);
     },
+    getAllGuesses(): Array<string> {
+      return this.allGuesses;
+    },
+    clearAllGuesses(): void {
+      this.allGuesses = [];
+    },
     getProgressIndex(): number {
       return (
         this.getScoreLevels.filter((v) => v <= this.getUserScore).length - 1
@@ -129,6 +136,8 @@ export const useMainStore = defineStore({
       });
     },
     submitGuess({ $t, guess }: { $t: Function; guess: string }) {
+      this.allGuesses.push(guess);
+
       if (guess.length < 4) {
         return this.showMessage({
           message: $t("too short"),
@@ -186,6 +195,7 @@ export const useMainStore = defineStore({
       this.gameDate = now;
       // new game so reset guesses
       this.correctGuesses = new Set([]);
+      this.allGuesses = [];
 
       const { todaysAnswerObj, yesterdaysAnswerObj } = generateAnswerObjs({
         allAnswers,

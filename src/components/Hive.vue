@@ -141,14 +141,32 @@ const displayMorse = (letter: any) => {
 <template>
   <button id="startQuiz">Start Quiz</button>
 
+  <div id="flashCardModal" class="modal" style="display: block; z-index: 99999;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <!-- <input type="text" id="userAnswer" placeholder="Enter your answer here">
+      <button id="checkQuiz">aaaaa</button> -->
+      <iframe   width="858"
+  height="540" src="https://beckychen0926.github.io/morse-bee-flashcards/"></iframe>
+       <!-- <iframe
+  id="inlineFrameExample"
+  title="Inline Frame Example"
+  width="300"
+  height="200"
+  src="http://localhost:8080/">
+</iframe> -->
+
+    </div>
+  </div>
+
   <!-- Modal popup for the quiz -->
-  <div id="quizModal" class="modal">
+  <!-- <div id="quizModal" class="modal" hidden>
     <div class="modal-content">
       <span class="close">&times;</span>
       <input type="text" id="userAnswer" placeholder="Enter your answer here">
       <button id="checkQuiz">Check Answer</button>
     </div>
-  </div>
+  </div> -->
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">

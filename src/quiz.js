@@ -17,6 +17,8 @@ let dayNum = urlParams.get('day');
 let isGame = urlParams.get('game');
 
 let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: days[dayNum]-1, allAnswers });
+let allGuesses = store.getAllGuesses;
+
 // console.log("letters: " + todayLetters.availableLetters);
 // console.log('answers: ' + todayLetters.pairanswers);
 let todayAnswers = [];
@@ -157,10 +159,12 @@ function checkUserInput(userInput){
   }
 }
 
-function sendDataToSheet(PID,day,isGame,hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+function sendDataToSheet(PID,day,isGame,hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
   // code that puts everything in a google doc
-  let res_key = ["PID","day","isGame","hiveLetters", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
-  let res_val = [PID,day,isGame,hiveLetters, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+  allGuesses = allGuesses.join(', ');
+
+  let res_key = ["PID","day","isGame","hiveLetters", "allGuesses","correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+  let res_val = [PID,day,isGame,hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
   var script_result = {};
 
   res_key.forEach(function (k, i) {
@@ -195,8 +199,9 @@ function quizInfo(word,userInput){
   let morseDuration = (morseEndTime.getTime() - morseStartTime.getTime())/1000;
   // console.log('morse duration: ' + morseDuration)
   let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
+  // console.log('add'+ allGuesses.join(', '));
   // console.log('answer duration: ' + answerDuration);
-  sendDataToSheet(pid,dayNum,isGame,todayLetters.availableLetters, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  sendDataToSheet(pid,dayNum,isGame,todayLetters.availableLetters, allGuesses, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
   // sendDataToSheet(todayLetters.availableLetters);
 }
 
