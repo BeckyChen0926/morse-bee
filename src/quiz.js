@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     flashcard.style.display = 'none';
     modal.style.display = 'block';
     modal.style.zIndex = '99999';
-  }, 60000);
+  }, 600000);
 });
 
 
