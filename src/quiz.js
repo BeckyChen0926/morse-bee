@@ -1,14 +1,14 @@
 import allAnswers from "../data/allAnswers.json";
 import { useMainStore } from "../src/store";
-import {} from "../src/utils";
+import { } from "../src/utils";
 
 const store = useMainStore();
 
-let days={
-  1:97,
-  2:98,
-  3:99,
-  4:100
+let days = {
+  1: 97,
+  2: 98,
+  3: 99,
+  4: 100
 }
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -16,7 +16,7 @@ let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
 let isGame = urlParams.get('game');
 
-let answers,pairanswers,comlet,pair,todayLetters = store.startGame({ days: days[dayNum]-1, allAnswers });
+let answers, pairanswers, comlet, pair, todayLetters = store.startGame({ days: days[dayNum] - 1, allAnswers });
 let allGuesses = store.getAllGuesses;
 
 // console.log("letters: " + todayLetters.availableLetters);
@@ -28,34 +28,43 @@ todayLetters.pairanswers.forEach((w) => {
 // console.log(todayAnswers);
 
 document.addEventListener('DOMContentLoaded', () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let gameParam = urlParams.get('game'); // Get the 'game' parameter
+  let urlParams = new URLSearchParams(window.location.search);
+  let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
-    if (gameParam === 'false') {
-        // console.log('should display');
-        let modal = document.getElementById('quizModal');
-        modal.style.display = 'block';
-        modal.style.zIndex = '99999';
+  if (gameParam === 'false') {
+    let modal = document.getElementById('quizModal');
+    // modal.style.display = 'block';
+    // modal.style.zIndex = '99999';
 
-        let start = document.getElementById('startQuiz');
-        start.style.zIndex = '99999';
+    let flashcard = document.getElementById('flashCardModal');
+    flashcard.style.display = 'block';
+    flashcard.style.zIndex = '99999';
 
-        // Prevent closing the modal by clicking outside
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                event.stopPropagation();
-            }
-        };
+    let start = document.getElementById('startQuiz');
+    start.style.zIndex = '99999';
 
-        let close = document.querySelector(".close");
-        close.style.display='none';
+    // Prevent closing the modal by clicking outside
+    window.onclick = function (event) {
+      if (event.target === modal || event.target === flashcard) {
+        event.stopPropagation();
+      }
+    };
 
-        let how =document.querySelector('.el-dialog');
-        how.style.display='none';
-        let overlay = document.querySelectorAll('.el-overlay')[1];
-        overlay.style.zIndex='-9999';
-        overlay.style.backgroundColor='white';
-    }
+    let close = document.querySelector(".close");
+    close.style.display = 'none';
+
+    let how = document.querySelector('.el-dialog');
+    how.style.display = 'none';
+    let overlay = document.querySelectorAll('.el-overlay')[1];
+    overlay.style.zIndex = '-9999';
+    overlay.style.backgroundColor = 'white';
+  }
+  // Hide the flashcard modal and show quiz modal after 1 minute
+  setTimeout(() => {
+    flashcard.style.display = 'none';
+    modal.style.display = 'block';
+    modal.style.zIndex = '99999';
+  }, 60000);
 });
 
 
@@ -107,10 +116,10 @@ preloadSounds();
 
 let currentIndex = 0;
 
-function getNextWord(){
-  if (currentIndex < todayAnswers.length){
+function getNextWord() {
+  if (currentIndex < todayAnswers.length) {
     return todayAnswers[currentIndex++];
-  } else{
+  } else {
     console.log('end of quiz!');
     return null;
   }
@@ -118,9 +127,9 @@ function getNextWord(){
 
 let currWord = '';
 
-function startGame(){
+function startGame() {
   const nextWord = getNextWord();
-  if (nextWord){
+  if (nextWord) {
     currWord = nextWord;
     document.getElementById("userAnswer").focus();
     document.getElementById("userAnswer").select();
@@ -131,25 +140,25 @@ function startGame(){
   }
 }
 
-function checkUserInput(userInput){
+function checkUserInput(userInput) {
   // if correct, say correct and play the next word
-  if (userInput == currWord || userInput == 'skip'){
+  if (userInput == currWord || userInput == 'skip') {
     quizEndTime = new Date();
-    if (userInput == 'skip'){
+    if (userInput == 'skip') {
       alert('skipped');
     } else {
       alert('correct!');
     }
-    quizInfo(currWord,userInput);
-    document.getElementById("userAnswer").value='';
+    quizInfo(currWord, userInput);
+    document.getElementById("userAnswer").value = '';
     document.getElementById("userAnswer").focus();
     document.getElementById("userAnswer").select()
     const nextWord = getNextWord();
-    if (nextWord){
+    if (nextWord) {
       currWord = nextWord;
       quizStartTime = new Date();
       playWordMorse(currWord);
-    } else{
+    } else {
       alert('quiz finished!');
     }
   } else {
@@ -159,16 +168,16 @@ function checkUserInput(userInput){
   }
 }
 
-function sendDataToSheet(PID,day,isGame,hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration){
+function sendDataToSheet(PID, day, isGame, hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration) {
   // code that puts everything in a google doc
   allGuesses = allGuesses.join(', ');
 
-  let res_key = ["PID","day","isGame","hiveLetters", "allGuesses","correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
-  let res_val = [PID,day,isGame,hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
+  let res_key = ["PID", "day", "isGame", "hiveLetters", "allGuesses", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
+  let res_val = [PID, day, isGame, hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
   var script_result = {};
 
   res_key.forEach(function (k, i) {
-      script_result[k] = res_val[i];
+    script_result[k] = res_val[i];
   })
   // console.log("----------------------------")
   // console.log(JSON.stringify(script_result));
@@ -176,7 +185,7 @@ function sendDataToSheet(PID,day,isGame,hiveLetters, allGuesses, correctAnswer, 
 
   const url = "https://script.google.com/macros/s/AKfycby-C1CromFwuVKdDm-iJiVtXPRa-4UGg3T5gauJW0eVAu_UvTNFrm4NWp1FL0I1NpOKOw/exec";
 
-  fetch(url,{
+  fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'no-cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -184,10 +193,11 @@ function sendDataToSheet(PID,day,isGame,hiveLetters, allGuesses, correctAnswer, 
       'Content-Type': 'application/json'
     },
     redirect: 'follow', // manual, *follow, error
-    body: JSON.stringify(script_result)})
+    body: JSON.stringify(script_result)
+  })
 }
 
-function quizInfo(word,userInput){
+function quizInfo(word, userInput) {
   // console.log('---------------------quiz info -------------------');
   // console.log('correct answer: '+word);
   // console.log('user answer: ' + userInput);
@@ -196,12 +206,12 @@ function quizInfo(word,userInput){
   // console.log('quiz end time: '+quizEndTime);
   // console.log('morse start time: ' + morseStartTime);
   // console.log('morse end time: '+morseEndTime);
-  let morseDuration = (morseEndTime.getTime() - morseStartTime.getTime())/1000;
+  let morseDuration = (morseEndTime.getTime() - morseStartTime.getTime()) / 1000;
   // console.log('morse duration: ' + morseDuration)
-  let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime())/1000)-morseDuration);
+  let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime()) / 1000) - morseDuration);
   // console.log('add'+ allGuesses.join(', '));
   // console.log('answer duration: ' + answerDuration);
-  sendDataToSheet(pid,dayNum,isGame,todayLetters.availableLetters, allGuesses, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  sendDataToSheet(pid, dayNum, isGame, todayLetters.availableLetters, allGuesses, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
   // sendDataToSheet(todayLetters.availableLetters);
 }
 
@@ -228,7 +238,7 @@ document.getElementById("startQuiz").addEventListener("click", () => {
   gameEndTime = new Date();
   // console.log('game end time: ' + gameEndTime);
   startGame();
-  window.addEventListener('keyup',checkQuizEnter);
+  window.addEventListener('keyup', checkQuizEnter);
 });
 
 document.getElementById("checkQuiz").addEventListener("click", () => {
@@ -236,8 +246,8 @@ document.getElementById("checkQuiz").addEventListener("click", () => {
   checkUserInput(userAnswer);
 });
 
-function checkQuizEnter(e){
-  if (e.key.toLowerCase() === 'enter'){
+function checkQuizEnter(e) {
+  if (e.key.toLowerCase() === 'enter') {
     const userAnswer = document.getElementById("userAnswer").value.trim();
     checkUserInput(userAnswer);
   }

@@ -9,11 +9,11 @@ const showRanking = ref(false);
 
 let possibleAnswers = 0;
 
-let days={
-  1:97,
-  2:98,
-  3:99,
-  4:100
+let days = {
+  1: 97,
+  2: 98,
+  3: 99,
+  4: 100
 }
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -21,38 +21,49 @@ let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
 
 document.addEventListener('DOMContentLoaded', () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let gameParam = urlParams.get('game'); // Get the 'game' parameter
+  let urlParams = new URLSearchParams(window.location.search);
+  let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
-    if (gameParam === 'false') {
-        // console.log('should display');
-        let modal = document.getElementById('quizModal');
-        modal.style.display = 'block';
-        modal.style.zIndex = '99999';
+  if (gameParam === 'false') {
 
-        let start = document.getElementById('startQuiz');
-        start.style.zIndex = '99999';
+    let modal = document.getElementById('quizModal');
+    // modal.style.display = 'block';
+    // modal.style.zIndex = '99999';
 
-        // Prevent closing the modal by clicking outside
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                event.stopPropagation();
-            }
-        };
+    let flashcard = document.getElementById('flashCardModal');
+    flashcard.style.display = 'block';
+    flashcard.style.zIndex = '99999';
 
-        let close = document.querySelector(".close");
-        close.style.display='none';
+    let start = document.getElementById('startQuiz');
+    start.style.zIndex = '99999';
 
-        let how =document.querySelector('.el-dialog');
-        how.style.display='none';
-        let overlay = document.querySelectorAll('.el-overlay')[1];
-        overlay.style.zIndex='-9999';
-        overlay.style.backgroundColor='white';
-    }
+    // Prevent closing the modal by clicking outside
+    window.onclick = function (event) {
+      if (event.target === modal || event.target === flashcard) {
+        event.stopPropagation();
+      }
+    };
+
+    let close = document.querySelector(".close");
+    close.style.display = 'none';
+
+    let how = document.querySelector('.el-dialog');
+    how.style.display = 'none';
+    let overlay = document.querySelectorAll('.el-overlay')[1];
+    overlay.style.zIndex = '-9999';
+    overlay.style.backgroundColor = 'white';
+
+    // Hide the flashcard modal and show quiz modal after 1 minute
+    setTimeout(() => {
+      flashcard.style.display = 'none';
+      modal.style.display = 'block';
+      modal.style.zIndex = '99999';
+    }, 60000);
+  }
 });
 
 
-let answers,pairanswers,comlet,pair,letters = store.startGame({ days: days[dayNum]-1, allAnswers });
+let answers, pairanswers, comlet, pair, letters = store.startGame({ days: days[dayNum] - 1, allAnswers });
 possibleAnswers = letters.pairanswers;
 
 
@@ -70,17 +81,14 @@ const progressPercentage = computed(() => {
 <template>
   <div class="row" @click="showRanking = true">
     <strong class="rank-level">
-      {{`Find ${possibleAnswers.length} four-letter words starting with "${letters.mostCommonStartingPair
-}"` }}
+      {{ `Find ${possibleAnswers.length} four-letter words starting with "${letters.mostCommonStartingPair
+        }"` }}
     </strong>
     <!-- can't use bl-yellow directly, need to pass hex in here -->
-    <el-progress
-      :percentage="progressPercentage"
-      :stroke-width="20"
-      color="#fce303"
+    <el-progress :percentage="progressPercentage" :stroke-width="20" color="#fce303"
       :format="() => `${progressPercentage}%`" /> <!-- Include percentage text -->
-      <!-- :format="() => store.getUserScore" /> -->
-      <!-- :percentage="store.getProgressPercentage" -->
+    <!-- :format="() => store.getUserScore" /> -->
+    <!-- :percentage="store.getProgressPercentage" -->
 
   </div>
 </template>

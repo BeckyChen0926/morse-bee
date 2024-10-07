@@ -51,11 +51,11 @@ let possibleAnswers = 0;
 
 let dayLogs = [];
 
-let days={
-  1:97,
-  2:98,
-  3:99,
-  4:100
+let days = {
+  1: 97,
+  2: 98,
+  3: 99,
+  4: 100
 }
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -63,41 +63,52 @@ let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
 // console.log(dayNum);
 document.addEventListener('DOMContentLoaded', () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let gameParam = urlParams.get('game'); // Get the 'game' parameter
+  let urlParams = new URLSearchParams(window.location.search);
+  let gameParam = urlParams.get('game'); // Get the 'game' parameter
 
-    if (gameParam === 'false') {
-        // console.log('should display');
-        let modal = document.getElementById('quizModal');
-        modal.style.display = 'block';
-        modal.style.zIndex = '99999';
+  if (gameParam === 'false') {
 
-        let start = document.getElementById('startQuiz');
-        start.style.zIndex = '99999';
+    let modal = document.getElementById('quizModal');
+    // modal.style.display = 'block';
+    // modal.style.zIndex = '99999';
 
-        // Prevent closing the modal by clicking outside
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                event.stopPropagation();
-            }
-        };
+    let flashcard = document.getElementById('flashCardModal');
+    flashcard.style.display = 'block';
+    flashcard.style.zIndex = '99999';
 
-        let close = document.querySelector(".close");
-        close.style.display='none';
+    let start = document.getElementById('startQuiz');
+    start.style.zIndex = '99999';
 
-        let how =document.querySelector('.el-dialog');
-        how.style.display='none';
-        let overlay = document.querySelectorAll('.el-overlay')[1];
-        overlay.style.zIndex='-9999';
-        overlay.style.backgroundColor='white';
-    }
+    // Prevent closing the modal by clicking outside
+    window.onclick = function (event) {
+      if (event.target === modal || event.target === flashcard) {
+        event.stopPropagation();
+      }
+    };
+
+    let close = document.querySelector(".close");
+    close.style.display = 'none';
+
+    let how = document.querySelector('.el-dialog');
+    how.style.display = 'none';
+    let overlay = document.querySelectorAll('.el-overlay')[1];
+    overlay.style.zIndex = '-9999';
+    overlay.style.backgroundColor = 'white';
+
+    // Hide the flashcard modal and show quiz modal after 1 minute
+    setTimeout(() => {
+      flashcard.style.display = 'none';
+      modal.style.display = 'block';
+      modal.style.zIndex = '99999';
+    }, 60000);
+  }
 });
 
 
 let count = 1;
 //change the date here 
 while (count < days[dayNum]) { //originally 89
-  let answers,pairanswers,comlet,pair,letters = store.startGame({ days: count, allAnswers });
+  let answers, pairanswers, comlet, pair, letters = store.startGame({ days: count, allAnswers });
   possibleAnswers = letters.pairanswers;
   let logData = {
     "day #": count,
@@ -128,10 +139,7 @@ window.onload = (event) => {
 </script>
 
 <template>
-  <el-dialog
-    v-model="showGameWonModal"
-    @closed="gameWonModalShown = true"
-    title="Congratulations!">
+  <el-dialog v-model="showGameWonModal" @closed="gameWonModalShown = true" title="Congratulations!">
     <GameWon />
   </el-dialog>
   <!-- <el-dialog v-model="showYesterdaysAnswers" :title="$t('Yesterdays Answers')">
@@ -182,9 +190,7 @@ window.onload = (event) => {
       </el-menu-item> -->
     </el-menu>
     <Progress />
-    <CorrectGuesses
-      @open="onOpenCorrectGuesses"
-      @close="onCloseCorrectGuesses" />
+    <CorrectGuesses @open="onOpenCorrectGuesses" @close="onCloseCorrectGuesses" />
     <Hive :ZIndex="zindex" />
   </div>
 </template>
@@ -213,6 +219,7 @@ window.onload = (event) => {
 html {
   box-sizing: border-box;
 }
+
 *,
 *:before,
 *:after {
@@ -247,34 +254,43 @@ h2 span {
   padding: 0;
   margin: 0;
 }
+
 .el-menu--horizontal {
   border-top: solid 1px var(--el-menu-border-color);
   justify-content: space-between;
+
   .el-menu-item {
     padding: 0;
   }
+
   // yellow is too bright on light theme, use default blue
   // .el-menu-item.is-active {
   //   color: $bl-yellow !important;
   //   border-bottom-color: currentcolor;
   // }
 }
+
 .is-focused {
   border-color: $bl-yellow !important;
 }
+
 .is-selected {
   color: $bl-yellow !important;
+
   &::after {
     color: $bl-yellow;
     background-color: $bl-yellow !important;
   }
 }
+
 .el-dialog {
   width: 80%;
 }
+
 .el-table {
   --el-table-header-bg-color: unset;
 }
+
 .el-message--success {
   --el-message-bg-color: unset;
   --el-message-text-color: unset;
@@ -294,6 +310,7 @@ h2 span {
   // account for 10px padding on either side of #app
   max-width: calc(100% - 20px);
   max-height: 100vh;
+
   #title-header {
     margin: 0;
     padding: 0;
@@ -316,6 +333,7 @@ html.dark {
   header strong {
     color: $bl-yellow;
   }
+
   .pangram {
     color: $bl-yellow;
   }
@@ -331,6 +349,7 @@ html.dark {
   #app {
     margin-top: 10px;
   }
+
   .menu-icon {
     margin: 19px 5px;
   }

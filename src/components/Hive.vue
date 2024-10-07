@@ -29,7 +29,12 @@ let userGuess = ref("");
 const onKeyPress = (e: KeyboardEvent) => {
   const pressedKey = e.key.toLowerCase();
   const quizModal = document.getElementById("quizModal");
+  const flashCard = document.getElementById("flashCardModal");
   if (quizModal && quizModal.style.display === "block") {
+    // do not handle keypress for hive game when modal is up
+    return;
+  }
+  if (flashCard && flashCard.style.display === "block") {
     // do not handle keypress for hive game when modal is up
     return;
   }
@@ -141,47 +146,33 @@ const displayMorse = (letter: any) => {
 <template>
   <button id="startQuiz">Start Quiz</button>
 
-  <div id="flashCardModal" class="modal" style="display: block; z-index: 99999;">
+  <!-- style="display: block; z-index: 99999; -->
+  <div id="flashCardModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <!-- <input type="text" id="userAnswer" placeholder="Enter your answer here">
-      <button id="checkQuiz">aaaaa</button> -->
-      <iframe   width="858"
-  height="540" src="https://beckychen0926.github.io/morse-bee-flashcards/"></iframe>
-       <!-- <iframe
-  id="inlineFrameExample"
-  title="Inline Frame Example"
-  width="300"
-  height="200"
-  src="http://localhost:8080/">
-</iframe> -->
-
+      <iframe height="90%" frameBorder="0" src="https://beckychen0926.github.io/morse-bee-flashcards/"></iframe>
     </div>
   </div>
 
   <!-- Modal popup for the quiz -->
-  <!-- <div id="quizModal" class="modal" hidden>
+  <div id="quizModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <input type="text" id="userAnswer" placeholder="Enter your answer here">
       <button id="checkQuiz">Check Answer</button>
     </div>
-  </div> -->
+  </div>
 
   <div class="sb-controls" style="`z-index: ${ZIndex}`">
     <div class="user-guess">
-      <strong
-        v-for="(letter, index) in userGuess"
-        :class="{ 'middle-letter': letter === store.middleLetter }"
+      <strong v-for="(letter, index) in userGuess" :class="{ 'middle-letter': letter === store.middleLetter }"
         :key="`user-guess-${index}`">
         {{ letter }}
       </strong>
     </div>
 
     <div class="user-guess-morse">
-      <strong
-        v-for="(letter, index) in userGuess"
-        :class="{ 'middle-letter': letter === store.middleLetter }"
+      <strong v-for="(letter, index) in userGuess" :class="{ 'middle-letter': letter === store.middleLetter }"
         :key="`user-guess-${index}`">
         {{ displayMorse(letter) }}
       </strong>
@@ -189,17 +180,11 @@ const displayMorse = (letter: any) => {
 
     <div class="hive">
       <div id="cover"></div>
-      <svg
-        class="hive-cell center"
-        @click="
+      <svg class="hive-cell center" @click="
           playHiveSound(store.middleLetter);
           userGuess += store.middleLetter;
-        "
-        viewBox="0 0 120 104">
-        <polygon
-          class="cell-fill"
-          points="0,52 30,0 90,0 120,52 90,104 30,104"
-          :stroke="store.getColor"
+        " viewBox="0 0 120 104">
+        <polygon class="cell-fill" points="0,52 30,0 90,0 120,52 90,104 30,104" :stroke="store.getColor"
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ store.middleLetter }}
@@ -208,19 +193,11 @@ const displayMorse = (letter: any) => {
           {{ displayMorse(store.middleLetter) }}
         </text>
       </svg>
-      <svg
-        v-for="(letter, index) in otherLetters"
-        :key="index"
-        @click="
+      <svg v-for="(letter, index) in otherLetters" :key="index" @click="
           playHiveSound(letter);
           userGuess += letter;
-        "
-        class="hive-cell outer"
-        viewBox="0 0 120 104">
-        <polygon
-          class="cell-fill"
-          points="0,52 30,0 90,0 120,52 90,104 30,104"
-          :stroke="store.getColor"
+        " class="hive-cell outer" viewBox="0 0 120 104">
+        <polygon class="cell-fill" points="0,52 30,0 90,0 120,52 90,104 30,104" :stroke="store.getColor"
           stroke-width="7.5" />
         <text class="cell-letter" x="50%" y="50%" dy="10.75%">
           {{ letter }}
@@ -232,18 +209,13 @@ const displayMorse = (letter: any) => {
     </div>
 
     <div class="hive-actions">
-      <button
-        class="hive-action hive-action__delete sb-touch-button"
-        style="margin-left: 0; min-width: 5.5em"
+      <button class="hive-action hive-action__delete sb-touch-button" style="margin-left: 0; min-width: 5.5em"
         @click="userGuess = userGuess.slice(0, -1)">
         {{ $t("Delete") }}
       </button>
-      <button
-        class="hive-action hive-action__shuffle sb-touch-button"
+      <button class="hive-action hive-action__shuffle sb-touch-button"
         @click="otherLetters = shuffle(otherLetters, Math.random())"></button>
-      <button
-        class="hive-action hive-action__submit sb-touch-button"
-        style="min-width: 5.5em"
+      <button class="hive-action hive-action__submit sb-touch-button" style="min-width: 5.5em"
         @click="submitGuess({ $t, guess: userGuess })">
         {{ $t("Enter") }}
       </button>
@@ -453,8 +425,9 @@ html.dark {
 }
 
 /* Modal Content/Box */
-.quizModal-content {
+.modal-content {
   background-color: #fefefe;
+  height: 100%
   // margin: 15% auto; /* 15% from the top and centered */
   // padding: 20px;
   // border: 1px solid #888;
