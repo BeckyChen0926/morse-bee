@@ -25,7 +25,7 @@ let todayAnswers = [];
 todayLetters.pairanswers.forEach((w) => {
   todayAnswers.push(w)
 });
-// console.log(todayAnswers);
+console.log(todayAnswers);
 
 document.addEventListener('DOMContentLoaded', () => {
   let urlParams = new URLSearchParams(window.location.search);

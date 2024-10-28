@@ -29,6 +29,11 @@ const onToggleDarkMode = () => {
   }
 };
 
+// const question = computed(() => store.getters.currentQuestion);
+// const answer = computed(() => store.getters.currentAnswer);
+// const score = ref(0);
+
+
 const showGameWonModal = computed(
   () => store.getProgressPercentage === 100 && gameWonModalShown.value === false
 );
@@ -130,7 +135,33 @@ window.onload = (event) => {
   // console.log('possible answers: ' + possibleAnswers);
 };
 
-
+// export{
+//   components: {
+//     flashcard,
+//   },
+//   data() {
+//     return {
+//       score: 0,
+//     }
+//   },
+//   computed: {
+//     question() {
+//       return this.$store.getters.currentQuestion // handled by vuex
+//     },
+//     answer() {
+//       return this.$store.getters.currentAnswer // handled by vuex
+//     },
+//   },
+//   methods: {
+//     correct() {
+//       this.$store.dispatch('correctAnswer') // handled by vuex
+//       this.score++
+//     },
+//     wrong() {
+//       this.$store.dispatch('wrongAnswer') // handled by vuex
+//     },
+//   },
+// }
 // TODO: remove i18n
 // TODO: extra not in spellingbee: track scores across days
 // TODO: add shake animation on incorrect submission?
@@ -151,30 +182,39 @@ window.onload = (event) => {
   <div class="common-layout fireworks">
     <div class="beforeFireworks" v-if="showGameWonModal" />
     <div class="afterFireworks" v-if="showGameWonModal" />
+    <!-- <flashcard :front="question" :back="answer"></flashcard> -->
+
     <!-- <el-header height="2em" id="title-header">
       <h2>
         <strong> Spelling Bee </strong>
         <span> {{ store.getGameDateString }} </span>
       </h2>
     </el-header> -->
-    <el-menu mode="horizontal" :ellipsis="false">
-      <el-menu-item index="1" @click="showInfo = true">
-        <el-tooltip :content="$t('Info')" placement="top">
-          <el-icon class="menu-icon">
-            <InfoFilled />
-          </el-icon>
-        </el-tooltip>
-        <span class="responsive-menu-text">{{ $t("Info") }}</span>
-      </el-menu-item>
-      <!-- <el-menu-item index="2" @click="showYesterdaysAnswers = true">
-        <el-tooltip :content="$t('Yesterday')" placement="top">
-          <el-icon class="menu-icon">
-            <Calendar />
-          </el-icon>
-        </el-tooltip>
-        <span class="responsive-menu-text">{{ $t("Yesterday") }}</span>
-      </el-menu-item> -->
 
+    <div style="display: ruby;">
+      <div style="width: 50%;">
+        <CorrectGuesses @open="onOpenCorrectGuesses" @close="onCloseCorrectGuesses" />
+      </div>
+      <div style="width: 50%;">
+        <Progress />
+      </div>
+
+    </div>
+
+    <el-menu mode="horizontal" :ellipsis="false">
+      <div style="width: 50%;">
+        <el-menu-item index="1" @click="showInfo = true">
+          <el-tooltip :content="$t('Info')" placement="top">
+            <el-icon class="menu-icon">
+              <InfoFilled />
+            </el-icon>
+          </el-tooltip>
+          <span class="responsive-menu-text">{{ $t("Info") }}</span>
+        </el-menu-item>
+      </div>
+      <div style="width: 50%; display: flex; justify-content: center; align-items: center;">
+        <button id="startQuiz">Start Quiz</button>
+      </div>
       <audio id="hiveAudio" preload="auto" hidden></audio>
 
       <!-- <el-menu-item index="3">
@@ -189,8 +229,6 @@ window.onload = (event) => {
           :inactive-icon="Moon" />
       </el-menu-item> -->
     </el-menu>
-    <Progress />
-    <CorrectGuesses @open="onOpenCorrectGuesses" @close="onCloseCorrectGuesses" />
     <Hive :ZIndex="zindex" />
   </div>
 </template>
@@ -248,6 +286,7 @@ h2 span {
 .common-layout {
   max-width: 1000px;
   margin: auto;
+  margin-top: -4%;
 }
 
 .el-header h2 {

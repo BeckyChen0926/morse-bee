@@ -144,7 +144,7 @@ const displayMorse = (letter: any) => {
 </script>
 
 <template>
-  <button id="startQuiz">Start Quiz</button>
+  <!-- <button id="startQuiz">Start Quiz</button> -->
 
   <!-- style="display: block; z-index: 99999; -->
   <div id="flashCardModal" class="modal">
@@ -228,13 +228,14 @@ const displayMorse = (letter: any) => {
 
 .user-guess {
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: -4%;
   height: 35px;
   font-weight: 700;
   font-size: 25px;
   .middle-letter {
     color: $bl-yellow;
   }
+  margin-top: -100%;
 }
 
 .user-guess-morse {
