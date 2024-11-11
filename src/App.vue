@@ -176,9 +176,9 @@ window.onload = (event) => {
   <!-- <el-dialog v-model="showYesterdaysAnswers" :title="$t('Yesterdays Answers')">
     <YesterdaysAnswers />
   </el-dialog> -->
-  <el-dialog v-model="showInfo" :title="$t('How to play')">
+  <!-- <el-dialog v-model="showInfo" :title="$t('How to play')">
     <Info />
-  </el-dialog>
+  </el-dialog> -->
   <div class="common-layout fireworks">
     <div class="beforeFireworks" v-if="showGameWonModal" />
     <div class="afterFireworks" v-if="showGameWonModal" />
@@ -193,16 +193,17 @@ window.onload = (event) => {
 
     <div style="display: ruby;">
       <div style="width: 50%;">
-        <CorrectGuesses @open="onOpenCorrectGuesses" @close="onCloseCorrectGuesses" />
-      </div>
-      <div style="width: 50%;">
         <Progress />
       </div>
+      <div style="width: 50%;">
+        <CorrectGuesses @open="onOpenCorrectGuesses" @close="onCloseCorrectGuesses" />
+      </div>
+
 
     </div>
 
     <el-menu mode="horizontal" :ellipsis="false">
-      <div style="width: 50%;">
+      <!-- <div style="width: 50%; display: flex; justify-content: center; align-items: center;">
         <el-menu-item index="1" @click="showInfo = true">
           <el-tooltip :content="$t('Info')" placement="top">
             <el-icon class="menu-icon">
@@ -211,10 +212,8 @@ window.onload = (event) => {
           </el-tooltip>
           <span class="responsive-menu-text">{{ $t("Info") }}</span>
         </el-menu-item>
-      </div>
-      <div style="width: 50%; display: flex; justify-content: center; align-items: center;">
-        <button id="startQuiz">Start Quiz</button>
-      </div>
+      </div> -->
+      <button id="startQuiz" style="margin: auto;">Start Quiz</button>
       <audio id="hiveAudio" preload="auto" hidden></audio>
 
       <!-- <el-menu-item index="3">

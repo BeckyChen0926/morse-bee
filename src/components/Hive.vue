@@ -416,9 +416,9 @@ html.dark {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 20%;
-  top: 40%;
+  top: 30%;
   width: 60%;
-  height: 60%;
+  height: 70%;
   border: black solid 0.2em;
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(255, 255, 255); /* Fallback color */
