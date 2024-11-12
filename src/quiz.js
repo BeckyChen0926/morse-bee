@@ -19,8 +19,8 @@ let isGame = urlParams.get('game');
 let answers, pairanswers, comlet, pair, todayLetters = store.startGame({ days: days[dayNum] - 1, allAnswers });
 let allGuesses = store.getAllGuesses;
 
-// console.log("letters: " + todayLetters.availableLetters);
-// console.log('answers: ' + todayLetters.pairanswers);
+console.log("letters: " + todayLetters.availableLetters);
+console.log('answers: ' + todayLetters.pairanswers);
 let todayAnswers = [];
 todayLetters.pairanswers.forEach((w) => {
   todayAnswers.push(w)

@@ -134,34 +134,6 @@ window.onload = (event) => {
   // console.log('game start time: ' + gameStartTime);
   // console.log('possible answers: ' + possibleAnswers);
 };
-
-// export{
-//   components: {
-//     flashcard,
-//   },
-//   data() {
-//     return {
-//       score: 0,
-//     }
-//   },
-//   computed: {
-//     question() {
-//       return this.$store.getters.currentQuestion // handled by vuex
-//     },
-//     answer() {
-//       return this.$store.getters.currentAnswer // handled by vuex
-//     },
-//   },
-//   methods: {
-//     correct() {
-//       this.$store.dispatch('correctAnswer') // handled by vuex
-//       this.score++
-//     },
-//     wrong() {
-//       this.$store.dispatch('wrongAnswer') // handled by vuex
-//     },
-//   },
-// }
 // TODO: remove i18n
 // TODO: extra not in spellingbee: track scores across days
 // TODO: add shake animation on incorrect submission?
