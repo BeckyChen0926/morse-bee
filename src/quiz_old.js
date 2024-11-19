@@ -117,7 +117,7 @@ function playHiveSound(letter) {
       audio.addEventListener("canplaythrough", function onCanPlayThrough() {
         audio.removeEventListener("canplaythrough", onCanPlayThrough);
         audio.play();
-        console.log("now playing: " + letter);
+        // console.log("now playing: " + letter);
       });
 
       audio.addEventListener("ended", function onEnded() {
@@ -140,7 +140,7 @@ function playWordMorse(words) {
   async function playNextLetter() {
     if (currentIndex < words.length && isPlaying) {
       const word = words[currentIndex];
-      console.log("curr word: " + word);
+      // console.log("curr word: " + word);
 
       for (const letter of word) {
         await playHiveSound(letter);
@@ -224,7 +224,7 @@ function playWordMorse(words) {
 }
 
 const letters = getHiveLetters();
-console.log("letters: " + letters);
+// console.log("letters: " + letters);
 
 let morseAnswer = "";
 
@@ -232,7 +232,7 @@ getWords(letters)
   .then((words) => {
     words = words.flat();
     morseAnswer = words.join(" ");
-    console.log("possible answers: " + words);
+    // console.log("possible answers: " + words);
     // console.log(morseAnswer);
     playWordMorse(words);
   })

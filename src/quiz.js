@@ -17,15 +17,16 @@ let dayNum = urlParams.get('day');
 let isGame = urlParams.get('game');
 
 let answers, pairanswers, comlet, pair, todayLetters = store.startGame({ days: days[dayNum] - 1, allAnswers });
-let allGuesses = store.getAllGuesses;
+let allGuesses = []
 
-console.log("letters: " + todayLetters.availableLetters);
-console.log('answers: ' + todayLetters.pairanswers);
+// console.log("letters: " + todayLetters.availableLetters);
+// console.log('answers: ' + todayLetters.pairanswers);
 let todayAnswers = [];
 todayLetters.pairanswers.forEach((w) => {
   todayAnswers.push(w)
 });
-console.log(todayAnswers);
+// let allGuesses = todayAnswers;
+// console.log('today answers: '+todayAnswers);
 
 document.addEventListener('DOMContentLoaded', () => {
   let urlParams = new URLSearchParams(window.location.search);
@@ -141,6 +142,8 @@ function startGame() {
 }
 
 function checkUserInput(userInput) {
+  allGuesses.push(userInput);
+  // console.log(allGuesses);
   // if correct, say correct and play the next word
   if (userInput == currWord || userInput == 'skip') {
     quizEndTime = new Date();
@@ -150,6 +153,7 @@ function checkUserInput(userInput) {
       alert('correct!');
     }
     quizInfo(currWord, userInput);
+    allGuesses = [];
     document.getElementById("userAnswer").value = '';
     document.getElementById("userAnswer").focus();
     document.getElementById("userAnswer").select()
@@ -170,7 +174,7 @@ function checkUserInput(userInput) {
 
 function sendDataToSheet(PID, day, isGame, hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration) {
   // code that puts everything in a google doc
-  allGuesses = allGuesses.join(', ');
+  // allGuesses = allGuesses.join(', ');
 
   let res_key = ["PID", "day", "isGame", "hiveLetters", "allGuesses", "correctAnswer", "userAnswer", "quizStartTime", "quizEndTime", "morseStartTime", "morseEndTime", "morseDuration", "answerDuration"];
   let res_val = [PID, day, isGame, hiveLetters, allGuesses, correctAnswer, userAnswer, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration];
@@ -211,7 +215,7 @@ function quizInfo(word, userInput) {
   let answerDuration = (((quizEndTime.getTime() - quizStartTime.getTime()) / 1000) - morseDuration);
   // console.log('add'+ allGuesses.join(', '));
   // console.log('answer duration: ' + answerDuration);
-  sendDataToSheet(pid, dayNum, isGame, todayLetters.availableLetters, allGuesses, word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
+  sendDataToSheet(pid, dayNum, isGame, todayLetters.availableLetters, allGuesses.toString(), word, userInput, quizStartTime, quizEndTime, morseStartTime, morseEndTime, morseDuration, answerDuration);
   // sendDataToSheet(todayLetters.availableLetters);
 }
 

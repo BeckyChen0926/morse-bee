@@ -25,9 +25,9 @@ preloadSounds();
 
 async function playLetter(state) {
   var aooo = new Audio(state.currentQuestion.audio); // path to file
-  console.log(state.currentQuestion.audio);
+  // console.log(state.currentQuestion.audio);
   aooo.play();
-  console.log("now playing: " + state.currentQuestion.answer);
+  // console.log("now playing: " + state.currentQuestion.answer);
 
 }
 
