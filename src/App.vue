@@ -34,9 +34,9 @@ const onToggleDarkMode = () => {
 // const score = ref(0);
 
 
-const showGameWonModal = computed(
-  () => store.getProgressPercentage === 100 && gameWonModalShown.value === false
-);
+// const showGameWonModal = computed(
+//   () => store.getProgressPercentage === 100 && gameWonModalShown.value === false
+// );
 
 const onOpenCorrectGuesses = () => {
   // without clearing timer, if user toggles correct guesses quickly, it will fade to background after timeout
@@ -142,9 +142,9 @@ window.onload = (event) => {
 </script>
 
 <template>
-  <el-dialog v-model="showGameWonModal" @closed="gameWonModalShown = true" title="Congratulations!">
+  <!-- <el-dialog v-model="showGameWonModal" @closed="gameWonModalShown = true" title="Congratulations!">
     <GameWon />
-  </el-dialog>
+  </el-dialog> -->
   <!-- <el-dialog v-model="showYesterdaysAnswers" :title="$t('Yesterdays Answers')">
     <YesterdaysAnswers />
   </el-dialog> -->
@@ -152,8 +152,8 @@ window.onload = (event) => {
     <Info />
   </el-dialog> -->
   <div class="common-layout fireworks">
-    <div class="beforeFireworks" v-if="showGameWonModal" />
-    <div class="afterFireworks" v-if="showGameWonModal" />
+    <!-- <div class="beforeFireworks" v-if="showGameWonModal" />
+    <div class="afterFireworks" v-if="showGameWonModal" /> -->
     <!-- <flashcard :front="question" :back="answer"></flashcard> -->
 
     <!-- <el-header height="2em" id="title-header">
