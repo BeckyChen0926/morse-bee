@@ -143,10 +143,14 @@ const displayMorse = (letter: any) => {
 };
 </script>
 
+
+<!-- http://localhost:3000/?day=1&game=False -->
+
 <template>
   <!-- <button id="startQuiz">Start Quiz</button> -->
 
   <!-- style="display: block; z-index: 99999; -->
+
   <div id="flashCardModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -159,6 +163,7 @@ const displayMorse = (letter: any) => {
     <div class="modal-content">
       <span class="close">&times;</span>
       <input type="text" id="userAnswer" placeholder="Enter your answer here">
+      <button id="repeatMorse">Repeat Audio</button>
       <button id="checkQuiz">Check Answer</button>
     </div>
   </div>

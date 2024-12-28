@@ -257,6 +257,13 @@ function checkQuizEnter(e) {
   }
 }
 
+document.getElementById("repeatMorse").addEventListener("click", () => {
+  // Replay the current word's Morse code
+  if (currWord) {
+    playWordMorse(currWord);
+  }
+});
+
 async function playHiveSound(letter) {
   const audio = document.getElementById("hiveAudio");
   const dict = {
