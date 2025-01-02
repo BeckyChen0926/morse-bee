@@ -27,7 +27,8 @@
     "element-plus": "^2.2.9",
     "pinia": "^2.0.15",
     "sass": "^1.53.0",
-    "vue": "^3.2.25",
+    "vue": "^2.5.13",
+    "vuex": "^3.0.1",
     "vue-i18n": "^9.1.10"
   },
   "devDependencies": {

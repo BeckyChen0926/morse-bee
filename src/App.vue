@@ -9,6 +9,8 @@ import GameWon from "./components/GameWon.vue";
 import allAnswers from "../data/allAnswers.json";
 import { useMainStore } from "./store";
 import { InfoFilled, Calendar, Sunny, Moon } from "@element-plus/icons-vue";
+// import Flashcard from './components/Flashcard.vue';
+
 
 const store = useMainStore();
 const showYesterdaysAnswers = ref(false);
@@ -61,15 +63,20 @@ let days = {
   2: 98,
   3: 99,
   4: 100
-}
+};
 
 let urlParams = new URLSearchParams(window.location.search);
 let pid = urlParams.get('PROLIFIC_PID');
 let dayNum = urlParams.get('day');
 // console.log(dayNum);
+
+// console.debug({pid, dayNum});
+
 document.addEventListener('DOMContentLoaded', () => {
   let urlParams = new URLSearchParams(window.location.search);
   let gameParam = urlParams.get('game'); // Get the 'game' parameter
+
+  // console.debug({gameParam});
 
   if (gameParam === 'false') {
 
@@ -185,6 +192,7 @@ window.onload = (event) => {
           <span class="responsive-menu-text">{{ $t("Info") }}</span>
         </el-menu-item>
       </div> -->
+      <!-- <Flashcard /> -->
       <button id="startQuiz" style="margin: auto;">Start Quiz</button>
       <audio id="hiveAudio" preload="auto" hidden></audio>
 
